@@ -140,24 +140,37 @@ export function PortfolioSection() {
                   <div className={`relative bg-muted rounded-md mb-6 overflow-hidden ${
                     project.featured && index === 0 ? "flex-1 min-h-[200px]" : "aspect-video"
                   }`}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-foreground/10 grayscale group-hover:grayscale-0 transition-all duration-500" />
-                    <svg className="absolute inset-0 w-full h-full opacity-30 group-hover:opacity-50 transition-opacity duration-500" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="20" y="20" width="100" height="60" rx="4" className="fill-foreground/5 group-hover:fill-accent/10 transition-colors duration-500" />
-                      <rect x="140" y="20" width="240" height="8" rx="2" className="fill-foreground/10" />
-                      <rect x="140" y="40" width="180" height="8" rx="2" className="fill-foreground/5" />
-                      <rect x="140" y="60" width="220" height="8" rx="2" className="fill-foreground/5" />
-                      <rect x="20" y="100" width="360" height="1" className="fill-foreground/10" />
-                      <rect x="20" y="120" width="80" height="80" rx="4" className="fill-foreground/5" />
-                      <rect x="20" y="220" width="80" height="60" rx="4" className="fill-foreground/5" />
-                      <rect x="120" y="120" width="80" height="160" rx="4" className="fill-accent/5 group-hover:fill-accent/15 transition-colors duration-500" />
-                      <rect x="220" y="120" width="160" height="80" rx="4" className="fill-foreground/5" />
-                      <rect x="220" y="220" width="160" height="60" rx="4" className="fill-foreground/5" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 border border-border rounded-full flex items-center justify-center bg-background/50 backdrop-blur-sm group-hover:border-accent group-hover:bg-accent/10 transition-all duration-500">
-                        <IconComponent className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-colors duration-500" />
-                      </div>
-                    </div>
+                    {project.imageUrl ? (
+                      <>
+                        <img 
+                          src={project.imageUrl} 
+                          alt={project.title}
+                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-foreground/20 to-foreground/5 group-hover:from-transparent group-hover:to-transparent transition-all duration-500" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-foreground/10 grayscale group-hover:grayscale-0 transition-all duration-500" />
+                        <svg className="absolute inset-0 w-full h-full opacity-30 group-hover:opacity-50 transition-opacity duration-500" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="20" y="20" width="100" height="60" rx="4" className="fill-foreground/5 group-hover:fill-accent/10 transition-colors duration-500" />
+                          <rect x="140" y="20" width="240" height="8" rx="2" className="fill-foreground/10" />
+                          <rect x="140" y="40" width="180" height="8" rx="2" className="fill-foreground/5" />
+                          <rect x="140" y="60" width="220" height="8" rx="2" className="fill-foreground/5" />
+                          <rect x="20" y="100" width="360" height="1" className="fill-foreground/10" />
+                          <rect x="20" y="120" width="80" height="80" rx="4" className="fill-foreground/5" />
+                          <rect x="20" y="220" width="80" height="60" rx="4" className="fill-foreground/5" />
+                          <rect x="120" y="120" width="80" height="160" rx="4" className="fill-accent/5 group-hover:fill-accent/15 transition-colors duration-500" />
+                          <rect x="220" y="120" width="160" height="80" rx="4" className="fill-foreground/5" />
+                          <rect x="220" y="220" width="160" height="60" rx="4" className="fill-foreground/5" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-16 h-16 border border-border rounded-full flex items-center justify-center bg-background/50 backdrop-blur-sm group-hover:border-accent group-hover:bg-accent/10 transition-all duration-500">
+                            <IconComponent className="h-6 w-6 text-muted-foreground group-hover:text-accent transition-colors duration-500" />
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <p className="text-muted-foreground leading-relaxed mb-6" data-testid={`text-project-description-${project.id}`}>

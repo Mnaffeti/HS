@@ -3,7 +3,7 @@ import gsap from "gsap";
 import TextPlugin from "gsap/TextPlugin";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import mainLogo from "@/assests/mainlogo.png";
+import mainLogo from "@/assests/navlogo.png";
 
 const navLinks = [
   { label: "Services", href: "#services" },

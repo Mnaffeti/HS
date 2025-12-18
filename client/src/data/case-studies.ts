@@ -3,159 +3,133 @@ import type { CaseStudy } from "@shared/schema";
 export const caseStudies: CaseStudy[] = [
   {
     id: "1",
-    title: "FinTech Trading Platform",
-    category: "Financial Services",
-    description: "High-frequency trading platform handling millions of transactions daily with real-time analytics.",
-    technologies: ["React", "Node.js", "PostgreSQL", "Redis", "WebSocket", "Docker"],
-    metrics: "99.99% uptime",
-    imageUrl: "",
+    title: "Harron",
+    category: "Mobile Apps",
+    description: "A Flutter mobile app providing Islamic educational content with a premium user experience. Designed with Figma, featuring smooth animations, optimized performance, and publication on App Store and Google Play.",
+    technologies: ["Flutter", "Figma", "REST API"],
+    metrics: "500K+ downloads",
+    imageUrl: "/src/assests/harron1.jpeg",
     featured: true,
-    challenge: "A leading investment firm needed to modernize their aging trading infrastructure. The existing system struggled with latency issues during peak trading hours and couldn't scale to meet growing transaction volumes. They needed a solution that could handle millions of transactions per day while maintaining sub-millisecond response times.",
-    solution: "We architected a distributed microservices platform using event-driven design patterns. The system leverages Redis for in-memory caching and real-time data streaming, with PostgreSQL for persistent storage. WebSocket connections provide instant updates to traders, while horizontal scaling through Kubernetes ensures capacity during market volatility.",
+    challenge: "The Islamic education space lacked a modern, user-friendly mobile application that could deliver content with a premium experience. Existing solutions had poor design, slow performance, and limited accessibility. There was a need for a beautifully designed, high-performance app that could engage users effectively across both iOS and Android platforms.",
+    solution: "We created Harron, a Flutter-based mobile application designed with Figma for a stunning user interface. The app features smooth animations, optimized performance, and integrates with REST APIs for dynamic content delivery. Published on both App Store and Google Play, ensuring maximum reach and accessibility for users worldwide.",
     results: [
-      "Reduced average latency from 200ms to 8ms",
-      "Achieved 99.99% uptime over 18 months",
-      "Processing 3.2M transactions daily at peak",
-      "40% reduction in infrastructure costs"
+      "500K+ downloads across platforms",
+      "Premium user experience with smooth animations",
+      "High performance and optimized loading",
+      "Successfully published on App Store and Google Play"
     ],
     testimonial: {
-      quote: "Hemma transformed our trading infrastructure. The new platform handles our peak volumes effortlessly and has become a competitive advantage for our firm.",
-      author: "Michael Chen",
-      role: "CTO",
-      company: "Meridian Capital"
+      quote: "Harron sets a new standard for Islamic educational apps. The design is beautiful, and the performance is exceptional. Our users are delighted.",
+      author: "Sheikh Ibrahim Al-Mansouri",
+      role: "Content Director",
+      company: "Islamic Education Foundation"
     },
     timeline: "8 months",
-    team: "12 engineers"
+    team: "7 engineers"
   },
   {
     id: "2",
-    title: "Healthcare Patient Portal",
-    category: "Healthcare",
-    description: "HIPAA-compliant patient management system with telemedicine integration.",
-    technologies: ["Next.js", "Python", "AWS", "FHIR", "PostgreSQL", "Twilio"],
-    metrics: "500K+ users",
-    imageUrl: "",
-    featured: true,
-    challenge: "A regional healthcare network with 15 hospitals needed a unified patient portal to replace fragmented legacy systems. The solution had to be fully HIPAA-compliant, integrate with existing EHR systems, and support telemedicine capabilities for remote consultations.",
-    solution: "We developed a comprehensive patient portal using Next.js for the frontend and Python microservices on AWS. The platform integrates with FHIR-compliant EHR systems and includes secure video consultations via Twilio. End-to-end encryption and detailed audit logging ensure regulatory compliance.",
+    title: "Power Event",
+    category: "Sports & Events",
+    description: "Modernize powerlifting competitions with an Android app for referee voting and a TV app to display results, using MQTT for real-time communication.",
+    technologies: ["Android Studio", "Python", "MQTT"],
+    metrics: "Real-time voting",
+    imageUrl: "/src/assests/powerevent.jpg",
+    featured: false,
+    challenge: "Powerlifting competitions required a modern solution for referee voting and real-time result display. Traditional paper-based systems were slow, error-prone, and didn't provide instant feedback to athletes and spectators. There was a need for a reliable, real-time communication system that could handle competition pressure.",
+    solution: "We built Power Event, a dual-platform solution featuring an Android app for referee voting and a TV application for result display. The system uses MQTT protocol for reliable real-time communication between devices, ensuring instant vote registration and result broadcasting. Python backend handles data processing and synchronization.",
     results: [
-      "Onboarded 500K+ patients within first year",
-      "60% reduction in appointment no-shows",
-      "85% patient satisfaction rating",
-      "Passed all HIPAA compliance audits"
+      "Real-time referee voting and result display",
+      "Eliminated paper-based errors",
+      "Instant feedback for athletes and spectators",
+      "Reliable MQTT-based communication"
     ],
     testimonial: {
-      quote: "The patient portal has fundamentally changed how we deliver care. Our patients love the convenience, and our staff appreciate the streamlined workflows.",
-      author: "Dr. Sarah Williams",
-      role: "Chief Medical Officer",
-      company: "Coastal Health System"
+      quote: "Power Event transformed our competitions. The real-time voting system is flawless, and spectators love seeing instant results on the big screen.",
+      author: "Mohamed Trabelsi",
+      role: "Competition Director",
+      company: "National Powerlifting Federation"
     },
-    timeline: "12 months",
-    team: "18 engineers"
+    timeline: "4 months",
+    team: "4 engineers"
   },
   {
     id: "3",
-    title: "E-Commerce Platform",
-    category: "Retail",
-    description: "Scalable multi-tenant e-commerce solution processing $50M+ annually.",
-    technologies: ["Vue.js", "Go", "Kubernetes", "MongoDB", "Elasticsearch", "Stripe"],
-    metrics: "$50M+ processed",
-    imageUrl: "",
-    featured: false,
-    challenge: "A growing retail conglomerate needed a unified e-commerce platform to support multiple brands under one infrastructure. Each brand required independent storefronts while sharing inventory, payments, and fulfillment systems.",
-    solution: "We built a multi-tenant architecture using Go microservices with Vue.js storefronts. Kubernetes orchestration enables independent scaling per tenant, while shared services for payments (Stripe) and search (Elasticsearch) reduce operational overhead. MongoDB provides flexible product catalogs for diverse brand needs.",
+    title: "ParkIt",
+    category: "Smart City & IoT",
+    description: "An intelligent parking management system integrating IoT, AI, and web technologies. Features include real-time license plate recognition, parking space detection using YOLOv6, and a MERN web app with payment via Flouci. CI/CD automated with Jenkins and Docker.",
+    technologies: ["Flask", "MERN", "YOLOv6", "Docker", "Jenkins"],
+    metrics: "Smart automation",
+    imageUrl: "/src/assests/parkit-page.png",
+    featured: true,
+    challenge: "Urban parking management faced significant challenges with manual processes, inefficient space utilization, and poor user experience. Cities needed an intelligent system that could automate parking detection, recognize vehicles, and provide seamless payment integration while being scalable and maintainable.",
+    solution: "We developed ParkIt, an end-to-end intelligent parking solution. The system uses YOLOv6 for real-time parking space detection and license plate recognition, Flask for AI model deployment, and a MERN stack web application for user interface and management. Payment integration via Flouci enables seamless transactions. Jenkins and Docker ensure automated deployment and scalability.",
     results: [
-      "Processing $50M+ in annual transactions",
-      "Supporting 8 brand storefronts",
-      "99.9% checkout success rate",
-      "2.5x increase in mobile conversions"
+      "Real-time parking space detection with YOLOv6",
+      "Automated license plate recognition",
+      "Seamless payment integration with Flouci",
+      "Full CI/CD pipeline with Jenkins and Docker"
     ],
     testimonial: {
-      quote: "Moving to the unified platform cut our operational costs significantly while giving each brand the flexibility they need. It's been a game-changer for our digital strategy.",
-      author: "James Morrison",
-      role: "VP of Digital",
-      company: "Vertex Retail Group"
+      quote: "ParkIt solved our parking chaos. The AI-powered detection is incredibly accurate, and users love how easy it is to find and pay for parking.",
+      author: "Fatma Kharrat",
+      role: "Smart City Manager",
+      company: "City Council"
     },
     timeline: "10 months",
-    team: "14 engineers"
+    team: "12 engineers"
   },
   {
     id: "4",
-    title: "IoT Fleet Management",
-    category: "Logistics",
-    description: "Real-time tracking and optimization for 10,000+ vehicles across North America.",
-    technologies: ["React Native", "Rust", "TimescaleDB", "MQTT", "MapBox", "AWS IoT"],
-    metrics: "10K+ vehicles",
-    imageUrl: "",
-    featured: false,
-    challenge: "A logistics company with a fleet of 10,000+ vehicles needed real-time visibility into their operations. They required accurate GPS tracking, predictive maintenance alerts, route optimization, and driver safety monitoring across North America.",
-    solution: "We developed an IoT platform using Rust for high-performance data ingestion from vehicle sensors via MQTT. TimescaleDB handles time-series data for analytics, while React Native provides mobile apps for drivers and dispatchers. Machine learning models predict maintenance needs and optimize routes.",
+    title: "Academy Navigator",
+    category: "Education",
+    description: "Simplifies school administration and enhances collaboration between educators and students to enhance efficiency and transparency in educational institutions.",
+    technologies: ["MySQL", "Spring Boot", "Angular"],
+    metrics: "Enhanced efficiency",
+    imageUrl: "/src/assests/loginApp.png",
+    featured: true,
+    challenge: "Educational institutions faced challenges in managing administrative tasks efficiently and maintaining transparent communication between educators, students, and administrators. The traditional systems were fragmented, leading to reduced productivity and poor collaboration.",
+    solution: "We developed Academy Navigator, a comprehensive school administration platform using Spring Boot for the backend, Angular for the frontend, and MySQL for data management. The system streamlines administrative processes, enables seamless collaboration, and provides real-time transparency across all educational activities.",
     results: [
-      "Tracking 10,000+ vehicles in real-time",
-      "18% reduction in fuel costs",
-      "35% decrease in maintenance downtime",
-      "Real-time alerts for safety incidents"
+      "Streamlined administrative workflows",
+      "Enhanced collaboration between educators and students",
+      "Improved transparency in educational processes",
+      "Centralized data management system"
     ],
     testimonial: {
-      quote: "The visibility we now have into our fleet operations is incredible. We've reduced costs, improved safety, and our customers love the accurate delivery estimates.",
-      author: "Robert Turner",
-      role: "Director of Operations",
-      company: "TransCon Logistics"
+      quote: "Academy Navigator has revolutionized how we manage our school operations. The platform brings efficiency and transparency that we never had before.",
+      author: "Dr. Ahmed Ben Salem",
+      role: "Director",
+      company: "Academic Institution"
     },
-    timeline: "9 months",
-    team: "10 engineers"
+    timeline: "6 months",
+    team: "6 engineers"
   },
   {
     id: "5",
-    title: "AI Content Platform",
-    category: "Media",
-    description: "Machine learning-powered content recommendation engine for a major publisher.",
-    technologies: ["Python", "TensorFlow", "GCP", "BigQuery", "FastAPI", "React"],
-    metrics: "3x engagement",
-    imageUrl: "",
-    featured: true,
-    challenge: "A major digital publisher with 50M monthly readers wanted to increase engagement through personalized content recommendations. Their existing rule-based system couldn't adapt to changing reader preferences or scale with their content volume.",
-    solution: "We built an ML-powered recommendation engine using TensorFlow and deployed on GCP. The system analyzes reading patterns, content semantics, and real-time behavior to serve personalized recommendations. A/B testing infrastructure enables continuous model improvement.",
-    results: [
-      "3x increase in articles read per session",
-      "45% improvement in time on site",
-      "2x increase in newsletter subscriptions",
-      "Personalization for 50M+ monthly users"
-    ],
-    testimonial: {
-      quote: "The recommendation engine has completely transformed reader engagement. Our audience is discovering more content than ever, and our subscription numbers reflect that.",
-      author: "Emily Rodriguez",
-      role: "Head of Product",
-      company: "Digital Media Group"
-    },
-    timeline: "6 months",
-    team: "8 engineers"
-  },
-  {
-    id: "6",
-    title: "Supply Chain Analytics",
-    category: "Manufacturing",
-    description: "Predictive analytics platform reducing inventory costs by 40%.",
-    technologies: ["React", "Scala", "Spark", "Snowflake", "Airflow", "Tableau"],
-    metrics: "40% cost reduction",
-    imageUrl: "",
+    title: "Vitrine",
+    category: "Web Development",
+    description: "Developed multiple responsive showcase websites for clients using modern web technologies. Focused on performance, design, SEO optimization, and deployment across platforms like IONOS and OVH.",
+    technologies: ["HTML", "CSS", "JavaScript", "Laravel"],
+    metrics: "Multiple clients",
+    imageUrl: "/src/assests/depanneurs.png",
     featured: false,
-    challenge: "A manufacturing company struggled with inventory management across 20 facilities. Overstocking tied up capital while stockouts disrupted production. They needed predictive visibility into demand patterns and supply chain disruptions.",
-    solution: "We built a predictive analytics platform using Apache Spark for processing historical data and ML models for demand forecasting. Snowflake provides the data warehouse, with Airflow orchestrating pipelines. Custom React dashboards give stakeholders actionable insights.",
+    challenge: "Small and medium businesses needed professional showcase websites that could effectively present their services online. They required responsive designs, excellent performance, strong SEO optimization, and reliable hosting solutions. Budget constraints meant the solution needed to be cost-effective while maintaining high quality.",
+    solution: "We developed a series of custom showcase websites using modern web technologies including HTML, CSS, JavaScript, and Laravel. Each website was tailored to client needs with responsive design, optimized for search engines, and deployed on reliable platforms like IONOS and OVH. Focus on performance and user experience ensured high conversion rates.",
     results: [
-      "40% reduction in inventory holding costs",
-      "90% accuracy in 30-day demand forecasts",
-      "25% reduction in stockouts",
-      "Unified visibility across 20 facilities"
+      "Multiple successful client deployments",
+      "Responsive design across all devices",
+      "Optimized SEO performance",
+      "Reliable hosting on IONOS and OVH"
     ],
     testimonial: {
-      quote: "The analytics platform paid for itself within the first quarter. We're making better decisions faster, and our inventory levels are finally optimized.",
-      author: "David Kim",
-      role: "Supply Chain Director",
-      company: "Precision Manufacturing Inc."
+      quote: "Our new website has transformed our online presence. The design is professional, loads fast, and we're getting more inquiries than ever before.",
+      author: "Jean-Pierre Dubois",
+      role: "Owner",
+      company: "Dépanneurs Privés"
     },
-    timeline: "7 months",
-    team: "9 engineers"
+    timeline: "Variable per client",
+    team: "3-5 engineers"
   }
 ];
 

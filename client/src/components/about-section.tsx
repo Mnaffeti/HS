@@ -310,7 +310,7 @@ export function AboutSection() {
               className="text-lg text-muted-foreground leading-relaxed cursor-pointer"
               data-testid="text-about-description"
             >
-              Founded in 2012, Hemma Consulting has grown from a small team of passionate 
+              Founded in 2025, Hemma Consulting has grown from a small team of passionate 
               developers into a full-service software consultancy trusted by Fortune 500 
               companies and ambitious startups alike. We combine deep technical expertise 
               with a genuine commitment to understanding your business.
@@ -330,7 +330,7 @@ export function AboutSection() {
           ))}
         </div>
 
-        <div>
+        {/* <div>
           <div className="flex items-center justify-between mb-12">
             <h3 className="text-2xl font-semibold tracking-tight" data-testid="text-team-headline">Leadership Team</h3>
           </div>
@@ -352,7 +352,7 @@ export function AboutSection() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -110,22 +110,35 @@ export default function CaseStudyPage() {
         <section className="py-16 lg:py-24">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="relative bg-muted rounded-md overflow-hidden aspect-video mb-16">
-              <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-foreground/10" />
-              <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="40" y="40" width="200" height="120" rx="8" className="fill-foreground/5" />
-                <rect x="280" y="40" width="480" height="16" rx="4" className="fill-foreground/10" />
-                <rect x="280" y="80" width="360" height="16" rx="4" className="fill-foreground/5" />
-                <rect x="280" y="120" width="440" height="16" rx="4" className="fill-foreground/5" />
-                <rect x="40" y="200" width="720" height="2" className="fill-foreground/10" />
-                <rect x="40" y="240" width="160" height="160" rx="8" className="fill-foreground/5" />
-                <rect x="240" y="240" width="160" height="320" rx="8" className="fill-accent/10" />
-                <rect x="440" y="240" width="320" height="160" rx="8" className="fill-foreground/5" />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-24 h-24 border-2 border-accent rounded-full flex items-center justify-center bg-background/50 backdrop-blur-sm">
-                  <IconComponent className="h-10 w-10 text-accent" />
-                </div>
-              </div>
+              {caseStudy.imageUrl ? (
+                <>
+                  <img 
+                    src={caseStudy.imageUrl} 
+                    alt={caseStudy.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                </>
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-foreground/10" />
+                  <svg className="absolute inset-0 w-full h-full opacity-40" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="40" y="40" width="200" height="120" rx="8" className="fill-foreground/5" />
+                    <rect x="280" y="40" width="480" height="16" rx="4" className="fill-foreground/10" />
+                    <rect x="280" y="80" width="360" height="16" rx="4" className="fill-foreground/5" />
+                    <rect x="280" y="120" width="440" height="16" rx="4" className="fill-foreground/5" />
+                    <rect x="40" y="200" width="720" height="2" className="fill-foreground/10" />
+                    <rect x="40" y="240" width="160" height="160" rx="8" className="fill-foreground/5" />
+                    <rect x="240" y="240" width="160" height="320" rx="8" className="fill-accent/10" />
+                    <rect x="440" y="240" width="320" height="160" rx="8" className="fill-foreground/5" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-24 h-24 border-2 border-accent rounded-full flex items-center justify-center bg-background/50 backdrop-blur-sm">
+                      <IconComponent className="h-10 w-10 text-accent" />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">

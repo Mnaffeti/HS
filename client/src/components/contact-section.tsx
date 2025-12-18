@@ -71,7 +71,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground uppercase tracking-wider">Email</p>
-                  <p className="font-medium mt-1">hello@hemmaconsulting.com</p>
+                  <p className="font-medium mt-1">contact@hemmaconsulting.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-4" data-testid="contact-phone">
@@ -80,10 +80,10 @@ export function ContactSection() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground uppercase tracking-wider">Phone</p>
-                  <p className="font-medium mt-1">+1 (555) 123-4567</p>
+                  <p className="font-medium mt-1">+216 96 196 407</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4" data-testid="contact-address">
+              {/* <div className="flex items-start gap-4" data-testid="contact-address">
                 <div className="p-2 bg-card border border-card-border rounded-md">
                   <MapPin className="h-5 w-5 text-muted-foreground" />
                 </div>
@@ -92,7 +92,7 @@ export function ContactSection() {
                   <p className="font-medium mt-1">100 Market Street, Suite 400</p>
                   <p className="text-muted-foreground">San Francisco, CA 94105</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 

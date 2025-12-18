@@ -417,7 +417,7 @@ export function HeroSection() {
                   View Our Work
                 </Button>
               </div>
-              <div className="flex gap-12 pt-8 border-t border-border">
+              {/* <div className="flex gap-12 pt-8 border-t border-border">
                 <div data-testid="stat-projects">
                   <p className="text-3xl lg:text-4xl font-bold">150+</p>
                   <p className="text-sm text-muted-foreground mt-1">Projects Delivered</p>
@@ -430,7 +430,7 @@ export function HeroSection() {
                   <p className="text-3xl lg:text-4xl font-bold">12+</p>
                   <p className="text-sm text-muted-foreground mt-1">Years Experience</p>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="lg:col-span-5 relative hidden lg:block">
               <div 
