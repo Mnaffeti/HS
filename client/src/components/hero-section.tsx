@@ -384,7 +384,8 @@ export function HeroSection() {
                   className="split text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-[0.9]"
                   data-testid="text-hero-headline"
                 >
-                  Frustrated ? 
+                  Feeling stuck?  
+                  <span className="block">Begin your</span> 
                   <span className="block">{" "} Digital</span>
                   <span className="block text-accent">Excellence</span>
                 </h1>

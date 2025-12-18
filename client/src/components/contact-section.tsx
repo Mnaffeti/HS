@@ -110,7 +110,7 @@ export function ContactSection() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="John Smith"
+                            placeholder="Foulen ben Foulen"
                             className="border-0 border-b border-border rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-accent px-0"
                             data-testid="input-name"
                             {...field}
@@ -131,7 +131,7 @@ export function ContactSection() {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="john@company.com"
+                            placeholder="Foulen@company.com"
                             className="border-0 border-b border-border rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-accent px-0"
                             data-testid="input-email"
                             {...field}
