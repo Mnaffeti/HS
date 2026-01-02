@@ -1,6 +1,8 @@
 import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
 import { ServicesSection } from "@/components/services-section";
+import { IsThisForYouSection } from "@/components/is-this-for-you-section";
+import { WhatYouGetSection } from "@/components/what-you-get-section";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";
@@ -13,6 +15,8 @@ export default function Home() {
       <main>
         <HeroSection />
         <ServicesSection />
+        <IsThisForYouSection />
+        <WhatYouGetSection />
         <PortfolioSection />
         <AboutSection />
         <ContactSection />
