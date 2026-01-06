@@ -17,9 +17,9 @@ export default function Home() {
         <ServicesSection />
         <IsThisForYouSection />
         <WhatYouGetSection />
-        <PortfolioSection />
-        <AboutSection />
+        
         <ContactSection />
+        <AboutSection />
       </main>
       <Footer />
     </div>

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -358,6 +360,23 @@ export function WhatYouGetSection() {
               <p className="relative text-4xl sm:text-5xl lg:text-6xl font-bold text-yellow-500 tracking-wide">
                 (FOR FREE)
               </p>
+            </div>
+
+            {/* CTA Button */}
+            <div className="pt-8">
+              <Button
+                size="lg"
+                onClick={() => {
+                  const element = document.querySelector("#contact");
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="bg-transparent text-yellow-500 border-2 border-yellow-500/50 group text-lg px-8 py-6 rounded-full hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.5)]"
+              >
+                Claim Your Free Roadmap Call
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           </div>
 

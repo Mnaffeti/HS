@@ -35,7 +35,18 @@ export function HeroSection() {
   ];
 
   useEffect(() => {
+    // Check if splash screen has already been shown
+    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
     const overlay = overlayRef.current;
+    
+    if (hasSeenSplash) {
+      setOverlayDone(true);
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+      return;
+    }
+
     if (!overlay) {
       setOverlayDone(true);
       return;
@@ -67,6 +78,8 @@ export function HeroSection() {
             document.body.style.overflow = "";
             overlay.style.display = "none";
             setOverlayDone(true);
+            // Mark splash screen as seen
+            sessionStorage.setItem('hasSeenSplash', 'true');
           },
         });
       },
@@ -94,8 +107,8 @@ export function HeroSection() {
     if (!headingRef.current) return;
 
     const ctx = gsap.context(() => {
-      const split = SplitType.create(headingRef.current, {
-        types: "words, chars",
+      const split = SplitType.create(headingRef.current!, {
+        types: "words,chars",
         charClass: "char",
       });
 
@@ -209,14 +222,12 @@ export function HeroSection() {
     if (!overlayDone) return;
     if (!horizontalRef.current) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-
     const ctx = gsap.context(() => {
       const wrapper = horizontalRef.current;
       const text = wrapper?.querySelector(".horizontal__text");
       if (!wrapper || !text) return;
 
-      const split = SplitType.create(text as HTMLElement, { types: "chars, words" });
+      const split = SplitType.create(text as HTMLElement, { types: "chars,words" });
 
       gsap.set(text, { opacity: 1 });
 
@@ -225,9 +236,9 @@ export function HeroSection() {
         ease: "none",
         scrollTrigger: {
           trigger: wrapper,
-          pin: true,
-          end: "+=900px",
-          scrub: true,
+          start: "top center",
+          end: "bottom center",
+          scrub: 1,
           onLeave: () => gsap.set(text, { opacity: 0 }),
           onLeaveBack: () => gsap.set(text, { opacity: 0 }),
           onEnter: () => gsap.set(text, { opacity: 1 }),
@@ -235,7 +246,7 @@ export function HeroSection() {
         },
       });
 
-      split.chars.forEach((char) => {
+      split.chars?.forEach((char) => {
         gsap.from(char, {
           yPercent: () => gsap.utils.random(-200, 200),
           rotation: () => gsap.utils.random(-20, 20),

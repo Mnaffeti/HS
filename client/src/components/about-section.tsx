@@ -311,9 +311,8 @@ export function AboutSection() {
               data-testid="text-about-description"
             >
               Founded in 2025, Hemma Consulting has grown from a small team of passionate 
-              developers into a full-service software consultancy trusted by Fortune 500 
-              companies and ambitious startups alike. We combine deep technical expertise 
-              with a genuine commitment to understanding your business.
+              developers into a full-service software consultancy.
+              We combine deep technical expertise with a genuine commitment to understanding your business.
             </p>
           </div>
         </div>
