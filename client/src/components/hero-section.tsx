@@ -4,7 +4,6 @@ import SplitType from "split-type";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import mainLogo from "@/assests/mainlogo.png";
 
 if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,11 +14,39 @@ export function HeroSection() {
   const descriptionRef = useRef<HTMLParagraphElement | null>(null);
   const horizontalRef = useRef<HTMLElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
-  const heroImageRef = useRef<HTMLDivElement | null>(null);
+  const rotatingTextRef = useRef<HTMLDivElement | null>(null);
+  const beforeSectionRef = useRef<HTMLDivElement | null>(null);
+  const afterSectionRef = useRef<HTMLDivElement | null>(null);
+  const imagineHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const [overlayDone, setOverlayDone] = useState(false);
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
+
+  const rotatingItems = [
+    "Your First 10K DT /Mo",
+    "Your First 100 Customers",
+    "Scaling To 6 Figures Business",
+    "Automating Your Sales",
+    "Building Recurring Revenue",
+    "Selling While You Sleep",
+    "10 Xing Your Business In No Time",
+    "Turning Clicks Into Clients On Autopilot",
+    "Scaling Beyond \"Word of Mouth\" For Ever",
+    "Doubling Your Business Without Doubling Your Workload"
+  ];
 
   useEffect(() => {
+    // Check if splash screen has already been shown
+    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
     const overlay = overlayRef.current;
+    
+    if (hasSeenSplash) {
+      setOverlayDone(true);
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+      return;
+    }
+
     if (!overlay) {
       setOverlayDone(true);
       return;
@@ -51,6 +78,8 @@ export function HeroSection() {
             document.body.style.overflow = "";
             overlay.style.display = "none";
             setOverlayDone(true);
+            // Mark splash screen as seen
+            sessionStorage.setItem('hasSeenSplash', 'true');
           },
         });
       },
@@ -78,8 +107,8 @@ export function HeroSection() {
     if (!headingRef.current) return;
 
     const ctx = gsap.context(() => {
-      const split = SplitType.create(headingRef.current, {
-        types: "words, chars",
+      const split = SplitType.create(headingRef.current!, {
+        types: "words,chars",
         charClass: "char",
       });
 
@@ -160,18 +189,45 @@ export function HeroSection() {
     };
   }, [overlayDone]);
 
+  // Rotating text animation
+  useEffect(() => {
+    if (!overlayDone) return;
+    if (!rotatingTextRef.current) return;
+
+    const interval = setInterval(() => {
+      setCurrentItemIndex((prev) => (prev + 1) % rotatingItems.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [overlayDone, rotatingItems.length]);
+
+  useEffect(() => {
+    if (!overlayDone) return;
+    if (!rotatingTextRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const el = rotatingTextRef.current;
+      if (!el) return;
+
+      gsap.fromTo(el,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+      );
+    }, rotatingTextRef);
+
+    return () => ctx.revert();
+  }, [currentItemIndex, overlayDone]);
+
   useEffect(() => {
     if (!overlayDone) return;
     if (!horizontalRef.current) return;
-
-    gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
       const wrapper = horizontalRef.current;
       const text = wrapper?.querySelector(".horizontal__text");
       if (!wrapper || !text) return;
 
-      const split = SplitType.create(text as HTMLElement, { types: "chars, words" });
+      const split = SplitType.create(text as HTMLElement, { types: "chars,words" });
 
       gsap.set(text, { opacity: 1 });
 
@@ -180,9 +236,9 @@ export function HeroSection() {
         ease: "none",
         scrollTrigger: {
           trigger: wrapper,
-          pin: true,
-          end: "+=900px",
-          scrub: true,
+          start: "top center",
+          end: "bottom center",
+          scrub: 1,
           onLeave: () => gsap.set(text, { opacity: 0 }),
           onLeaveBack: () => gsap.set(text, { opacity: 0 }),
           onEnter: () => gsap.set(text, { opacity: 1 }),
@@ -190,7 +246,7 @@ export function HeroSection() {
         },
       });
 
-      split.chars.forEach((char) => {
+      split.chars?.forEach((char) => {
         gsap.from(char, {
           yPercent: () => gsap.utils.random(-200, 200),
           rotation: () => gsap.utils.random(-20, 20),
@@ -215,127 +271,168 @@ export function HeroSection() {
     return () => ctx.revert();
   }, [overlayDone]);
 
-  // Hero image GSAP animation
+  // Imagine This section animations
   useEffect(() => {
-    if (!overlayDone) return;
-    if (!heroImageRef.current) return;
+    if (!imagineHeadingRef.current) return;
 
     const ctx = gsap.context(() => {
-      const container = heroImageRef.current;
-      const image = container?.querySelector(".hero-logo");
-      const glowRing = container?.querySelector(".glow-ring");
-      const floatingShapes = container?.querySelectorAll(".floating-shape");
-      const particles = container?.querySelectorAll(".particle");
-
-      if (!container || !image) return;
-
-      // Initial state
-      gsap.set(container, { autoAlpha: 0, scale: 0.8 });
-      gsap.set(image, { scale: 0.5, rotation: -15, autoAlpha: 0 });
-      if (glowRing) gsap.set(glowRing, { scale: 0, autoAlpha: 0 });
-      if (floatingShapes) gsap.set(floatingShapes, { scale: 0, autoAlpha: 0 });
-      if (particles) gsap.set(particles, { scale: 0, autoAlpha: 0 });
-
-      // Main timeline
-      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
-      tl.to(container, {
-        autoAlpha: 1,
-        scale: 1,
-        duration: 0.8,
-      })
-      .to(image, {
-        scale: 1,
-        rotation: 0,
-        autoAlpha: 1,
-        duration: 1.2,
-        ease: "elastic.out(1, 0.5)",
-      }, "-=0.4")
-      .to(glowRing, {
-        scale: 1,
-        autoAlpha: 1,
+      gsap.from(imagineHeadingRef.current, {
+        opacity: 0,
+        y: 30,
         duration: 1,
-        ease: "power2.out",
-      }, "-=0.8")
-      .to(floatingShapes, {
-        scale: 1,
-        autoAlpha: 1,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-      }, "-=0.6")
-      .to(particles, {
-        scale: 1,
-        autoAlpha: 1,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: "power2.out",
-      }, "-=0.4");
-
-      // Continuous floating animation for logo
-      gsap.to(image, {
-        y: -15,
-        duration: 2.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: imagineHeadingRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
       });
-
-      // Glow ring pulse animation
-      if (glowRing) {
-        gsap.to(glowRing, {
-          scale: 1.1,
-          autoAlpha: 0.6,
-          duration: 2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-
-      // Floating shapes orbit animation
-      if (floatingShapes) {
-        floatingShapes.forEach((shape, i) => {
-          const duration = 8 + i * 2;
-          const delay = i * 0.5;
-          gsap.to(shape, {
-            rotation: 360,
-            duration,
-            repeat: -1,
-            ease: "none",
-            delay,
-          });
-          gsap.to(shape, {
-            y: gsap.utils.random(-20, 20),
-            x: gsap.utils.random(-10, 10),
-            duration: 3 + i,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay,
-          });
-        });
-      }
-
-      // Particles floating animation
-      if (particles) {
-        particles.forEach((particle, i) => {
-          gsap.to(particle, {
-            y: gsap.utils.random(-30, 30),
-            x: gsap.utils.random(-20, 20),
-            duration: 2 + Math.random() * 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: i * 0.1,
-          });
-        });
-      }
-
-    }, heroImageRef);
+    });
 
     return () => ctx.revert();
-  }, [overlayDone]);
+  }, []);
+
+  useEffect(() => {
+    if (!beforeSectionRef.current || !afterSectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const beforeSection = beforeSectionRef.current;
+      const afterSection = afterSectionRef.current;
+
+      if (!beforeSection || !afterSection) return;
+
+      // Before section animation - shake and fade in
+      const beforeItems = beforeSection.querySelectorAll('[data-before-item]');
+      const beforeBadge = beforeSection.querySelector('[data-badge]');
+      const beforeVisual = beforeSection.querySelector('[data-visual]');
+
+      gsap.from(beforeSection, {
+        opacity: 0,
+        x: -50,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: beforeSection,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(beforeBadge, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.6,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: beforeSection,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(beforeItems, {
+        opacity: 0,
+        x: -30,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: beforeSection,
+          start: "top 70%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(beforeVisual, {
+        opacity: 0,
+        scale: 0.5,
+        rotation: -180,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: beforeSection,
+          start: "top 65%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // After section animation - smooth reveal
+      const afterItems = afterSection.querySelectorAll('[data-after-item]');
+      const afterBadge = afterSection.querySelector('[data-badge]');
+      const afterVisual = afterSection.querySelector('[data-visual]');
+
+      gsap.from(afterSection, {
+        opacity: 0,
+        x: 50,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: afterSection,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(afterBadge, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.6,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: afterSection,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(afterItems, {
+        opacity: 0,
+        x: 30,
+        duration: 0.6,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: afterSection,
+          start: "top 70%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(afterVisual, {
+        opacity: 0,
+        scale: 0.5,
+        duration: 1.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: afterSection,
+          start: "top 65%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Draw the growth path
+      const growthPath = afterVisual?.querySelector('path');
+      if (growthPath) {
+        const length = (growthPath as SVGPathElement).getTotalLength();
+        gsap.set(growthPath, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+        });
+        gsap.to(growthPath, {
+          strokeDashoffset: 0,
+          duration: 1.5,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: afterSection,
+            start: "top 65%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   const scrollToContact = () => {
     const element = document.querySelector("#contact");
@@ -373,108 +470,141 @@ export function HeroSection() {
 
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            <div className="lg:col-span-7 space-y-8">
-              <div className="space-y-6">
-                <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground font-medium" data-testid="text-hero-label">
-                  Software Consulting
-                </p>
-                <h1
-                  ref={headingRef}
-                  className="split text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-[0.9]"
-                  data-testid="text-hero-headline"
-                >
-                  Feeling stuck?  
-                  <span className="block">Begin your</span> 
-                  <span className="block">{" "} Digital</span>
-                  <span className="block text-accent">Excellence</span>
-                </h1>
-              </div>
-              <p
-                ref={descriptionRef}
-                className="text-lg lg:text-xl text-muted-foreground max-w-xl leading-relaxed scramble-desc"
-                data-testid="text-hero-description"
+          <div className="flex flex-col items-center justify-center text-center space-y-12">
+            {/* Main Headline */}
+            <div className="space-y-8 max-w-4xl">
+              <h1
+                ref={headingRef}
+                className="split text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight leading-tight"
+                data-testid="text-hero-headline"
               >
-                Transform your business with custom software solutions. We partner with 
-                ambitious companies to architect, build, and scale technology that drives 
-                measurable results.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button
-                  size="lg"
-                  onClick={scrollToContact}
-                  className="bg-accent text-accent-foreground border border-accent-border group"
-                  data-testid="button-hero-cta"
+                You're One Call Away From..
+              </h1>
+              
+              {/* Rotating Items */}
+              <div className="min-h-[80px] flex items-center justify-center">
+                <div
+                  ref={rotatingTextRef}
+                  key={currentItemIndex}
+                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-accent"
+                  data-testid="text-rotating-item"
                 >
-                  Start a Project
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={scrollToWork}
-                  data-testid="button-hero-secondary"
-                >
-                  View Our Work
-                </Button>
+                  {rotatingItems[currentItemIndex]}
+                </div>
               </div>
-              {/* <div className="flex gap-12 pt-8 border-t border-border">
-                <div data-testid="stat-projects">
-                  <p className="text-3xl lg:text-4xl font-bold">150+</p>
-                  <p className="text-sm text-muted-foreground mt-1">Projects Delivered</p>
-                </div>
-                <div data-testid="stat-clients">
-                  <p className="text-3xl lg:text-4xl font-bold">50+</p>
-                  <p className="text-sm text-muted-foreground mt-1">Happy Clients</p>
-                </div>
-                <div data-testid="stat-years">
-                  <p className="text-3xl lg:text-4xl font-bold">12+</p>
-                  <p className="text-sm text-muted-foreground mt-1">Years Experience</p>
-                </div>
-              </div> */}
             </div>
-            <div className="lg:col-span-5 relative hidden lg:block">
-              <div 
-                ref={heroImageRef}
-                className="aspect-[4/5] relative rounded-2xl overflow-hidden flex items-center justify-center"
+
+            {/* Subhead */}
+            <p
+              ref={descriptionRef}
+              className="text-xl lg:text-2xl text-muted-foreground max-w-4xl leading-relaxed scramble-desc"
+              data-testid="text-hero-description"
+            >
+              Done‑For‑You Growth Systems That Attract, Convert, And Retain Your Dream Clients Without Tech overwhelm, Guesswork, Or Hiring A Huge Team.
+            </p>
+
+            {/* CTA Button */}
+            <div className="flex justify-center pt-8">
+              <Button
+                size="lg"
+                onClick={scrollToContact}
+                className="bg-transparent text-yellow-500 border-2 border-yellow-500/50 group text-lg px-8 py-6 rounded-full hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.5)]"
+                data-testid="button-hero-cta"
               >
-                {/* Background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-accent/10" />
-                
-                {/* Animated glow ring */}
-                <div className="glow-ring absolute inset-8 rounded-full border-2 border-accent/30 blur-sm" />
-                
-                {/* Floating geometric shapes */}
-                <div className="floating-shape absolute top-12 left-8 w-16 h-16 border border-accent/20 rounded-lg rotate-12" />
-                <div className="floating-shape absolute top-24 right-12 w-12 h-12 border border-border rounded-full" />
-                <div className="floating-shape absolute bottom-20 left-16 w-20 h-20 border border-accent/30 rotate-45" />
-                <div className="floating-shape absolute bottom-32 right-8 w-8 h-8 bg-accent/10 rounded-lg" />
-                
-                {/* Particles */}
-                <div className="particle absolute top-16 left-1/4 w-2 h-2 bg-accent/40 rounded-full" />
-                <div className="particle absolute top-1/3 right-1/4 w-3 h-3 bg-accent/30 rounded-full" />
-                <div className="particle absolute bottom-1/4 left-1/3 w-2 h-2 bg-foreground/20 rounded-full" />
-                <div className="particle absolute top-1/2 left-12 w-1.5 h-1.5 bg-accent/50 rounded-full" />
-                <div className="particle absolute bottom-16 right-1/3 w-2 h-2 bg-accent/25 rounded-full" />
-                <div className="particle absolute top-1/4 right-16 w-1 h-1 bg-foreground/30 rounded-full" />
-                
-                {/* Main logo */}
-                <img
-                  src={mainLogo}
-                  alt="Hemma Consult logo"
-                  className="hero-logo relative z-10 w-4/5 h-4/5 object-contain drop-shadow-2xl"
-                />
-                
-                {/* Decorative corner accents */}
-                <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-accent/40" />
-                <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-accent/40" />
-                <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-accent/40" />
-                <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-accent/40" />
+                Free 10-Minute Audit Call
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* IMAGINE THIS Section */}
+      <section className="relative py-20 lg:py-32 bg-gradient-to-b from-background to-background/50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 ref={imagineHeadingRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+              IMAGINE THIS<span className="text-yellow-500">...</span>
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center max-w-6xl mx-auto">
+            {/* Before Section */}
+            <div ref={beforeSectionRef} className="relative p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-red-950/20 to-red-900/10 border border-red-900/30 backdrop-blur-sm">
+              <div className="absolute -top-4 left-8">
+                <span data-badge className="bg-red-500 text-white px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
+                  Before
+                </span>
+              </div>
+              <div className="mt-6 space-y-6">
+                <p data-before-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                  You never know where the next client is coming from.
+                </p>
+                <p data-before-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                  Revenue swings.
+                </p>
+                <p data-before-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                  You're doing everything yourself.
+                </p>
+              </div>
+              {/* Chaos visual element */}
+              <div data-visual className="mt-8 opacity-20">
+                <div className="h-32 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-full h-1 bg-red-500/30 transform rotate-12"></div>
+                    <div className="w-full h-1 bg-red-500/30 transform -rotate-12"></div>
+                    <div className="w-1 h-full bg-red-500/30 transform rotate-45"></div>
+                    <div className="w-1 h-full bg-red-500/30 transform -rotate-45"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Arrow */}
+            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+              <div className="bg-background border-4 border-yellow-500 rounded-full p-4 shadow-lg">
+                <ArrowRight className="w-8 h-8 text-yellow-500" />
+              </div>
+            </div>
+
+            {/* After Section */}
+            <div ref={afterSectionRef} className="relative p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-green-950/20 to-emerald-900/10 border border-green-900/30 backdrop-blur-sm">
+              <div className="absolute -top-4 left-8">
+                <span data-badge className="bg-green-500 text-white px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
+                  After
+                </span>
+              </div>
+              <div className="mt-6 space-y-6">
+                <p data-after-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                  Your calendar stays booked.
+                </p>
+                <p data-after-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                  Your offers sell consistently.
+                </p>
+                <p data-after-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                  You can finally focus on delivery, not chasing.
+                </p>
+              </div>
+              {/* Growth path visual element */}
+              <div data-visual className="mt-8 opacity-20">
+                <div className="h-32 relative">
+                  <svg viewBox="0 0 200 100" className="w-full h-full">
+                    <path
+                      d="M 10 90 Q 60 70, 100 50 T 190 10"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      className="text-green-500"
+                    />
+                    <circle cx="190" cy="10" r="5" className="fill-green-500" />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
       <section ref={horizontalRef} className="horizontal overflow-hidden flex items-center" aria-label="Horizontal marquee">
         <div className="w-full">
           <h3 className="horizontal__text text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight">
