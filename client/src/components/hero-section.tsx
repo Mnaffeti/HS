@@ -3,7 +3,9 @@ import gsap from "gsap";
 import SplitType from "split-type";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import teamSpiritSvg from "../assests/Team spirit-cuate.svg";
+import goodTeamSvg from "../assests/Good team-cuate.svg";
 
 if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,9 +17,10 @@ export function HeroSection() {
   const horizontalRef = useRef<HTMLElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const rotatingTextRef = useRef<HTMLDivElement | null>(null);
-  const beforeSectionRef = useRef<HTMLDivElement | null>(null);
-  const afterSectionRef = useRef<HTMLDivElement | null>(null);
   const imagineHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const goodTeamSvgRef = useRef<HTMLDivElement | null>(null);
+  const afterSectionRef = useRef<HTMLDivElement | null>(null);
+  const cartoonRef = useRef<HTMLDivElement | null>(null);
   const [overlayDone, setOverlayDone] = useState(false);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
 
@@ -218,6 +221,56 @@ export function HeroSection() {
     return () => ctx.revert();
   }, [currentItemIndex, overlayDone]);
 
+  // Cartoon SVG animation
+  useEffect(() => {
+    if (!overlayDone) return;
+    if (!cartoonRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const cartoon = cartoonRef.current;
+      if (!cartoon) return;
+
+      // Initial entrance animation - slide in from right
+      gsap.fromTo(cartoon,
+        {
+          opacity: 0,
+          scale: 0.8,
+          x: 150
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          delay: 0.5
+        }
+      );
+
+      // Continuous floating animation
+      gsap.to(cartoon, {
+        y: -20,
+        duration: 2,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+        delay: 1.7
+      });
+
+      // Gentle rotation animation
+      gsap.to(cartoon, {
+        rotation: 5,
+        duration: 3,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+        delay: 1.7
+      });
+    }, cartoonRef);
+
+    return () => ctx.revert();
+  }, [overlayDone]);
+
   useEffect(() => {
     if (!overlayDone) return;
     if (!horizontalRef.current) return;
@@ -292,147 +345,48 @@ export function HeroSection() {
     return () => ctx.revert();
   }, []);
 
+  // Good Team SVG animation
   useEffect(() => {
-    if (!beforeSectionRef.current || !afterSectionRef.current) return;
+    if (!goodTeamSvgRef.current) return;
 
     const ctx = gsap.context(() => {
-      const beforeSection = beforeSectionRef.current;
-      const afterSection = afterSectionRef.current;
-
-      if (!beforeSection || !afterSection) return;
-
-      // Before section animation - shake and fade in
-      const beforeItems = beforeSection.querySelectorAll('[data-before-item]');
-      const beforeBadge = beforeSection.querySelector('[data-badge]');
-      const beforeVisual = beforeSection.querySelector('[data-visual]');
-
-      gsap.from(beforeSection, {
-        opacity: 0,
-        x: -50,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: beforeSection,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
+      // Floating animation
+      gsap.to(goodTeamSvgRef.current, {
+        y: -25,
+        duration: 3,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
       });
 
-      gsap.from(beforeBadge, {
-        scale: 0,
-        opacity: 0,
-        duration: 0.6,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: beforeSection,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
+      // Subtle rotation
+      gsap.to(goodTeamSvgRef.current, {
+        rotation: 3,
+        duration: 4,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
       });
 
-      gsap.from(beforeItems, {
+      // Entrance animation
+      gsap.from(goodTeamSvgRef.current, {
         opacity: 0,
-        x: -30,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: beforeSection,
-          start: "top 70%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      gsap.from(beforeVisual, {
-        opacity: 0,
-        scale: 0.5,
-        rotation: -180,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: beforeSection,
-          start: "top 65%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      // After section animation - smooth reveal
-      const afterItems = afterSection.querySelectorAll('[data-after-item]');
-      const afterBadge = afterSection.querySelector('[data-badge]');
-      const afterVisual = afterSection.querySelector('[data-visual]');
-
-      gsap.from(afterSection, {
-        opacity: 0,
-        x: 50,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: afterSection,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      gsap.from(afterBadge, {
-        scale: 0,
-        opacity: 0,
-        duration: 0.6,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: afterSection,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      gsap.from(afterItems, {
-        opacity: 0,
-        x: 30,
-        duration: 0.6,
-        stagger: 0.15,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: afterSection,
-          start: "top 70%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      gsap.from(afterVisual, {
-        opacity: 0,
-        scale: 0.5,
+        scale: 0.8,
         duration: 1.2,
-        ease: "power2.out",
+        ease: "elastic.out(1, 0.5)",
         scrollTrigger: {
-          trigger: afterSection,
-          start: "top 65%",
+          trigger: goodTeamSvgRef.current,
+          start: "top 80%",
           toggleActions: "play none none none",
         },
       });
-
-      // Draw the growth path
-      const growthPath = afterVisual?.querySelector('path');
-      if (growthPath) {
-        const length = (growthPath as SVGPathElement).getTotalLength();
-        gsap.set(growthPath, {
-          strokeDasharray: length,
-          strokeDashoffset: length,
-        });
-        gsap.to(growthPath, {
-          strokeDashoffset: 0,
-          duration: 1.5,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: afterSection,
-            start: "top 65%",
-            toggleActions: "play none none none",
-          },
-        });
-      }
     });
 
     return () => ctx.revert();
   }, []);
+
+  // After items - no animation, just display
+  // Removed animation as per user request
 
   const scrollToContact = () => {
     const element = document.querySelector("#contact");
@@ -470,146 +424,123 @@ export function HeroSection() {
 
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-          <div className="flex flex-col items-center justify-center text-center space-y-12">
-            {/* Main Headline */}
-            <div className="space-y-8 max-w-4xl">
-              <h1
-                ref={headingRef}
-                className="split text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight leading-tight"
-                data-testid="text-hero-headline"
-              >
-                You're One Call Away From..
-              </h1>
-              
-              {/* Rotating Items */}
-              <div className="min-h-[80px] flex items-center justify-center">
-                <div
-                  ref={rotatingTextRef}
-                  key={currentItemIndex}
-                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-accent"
-                  data-testid="text-rotating-item"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Text Content - Left Side */}
+            <div className="flex flex-col items-start text-left space-y-8 lg:space-y-10 order-2 lg:order-1">
+              {/* Main Headline */}
+              <div className="space-y-6 w-full">
+                <h1
+                  ref={headingRef}
+                  className="split text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-tight"
+                  data-testid="text-hero-headline"
                 >
-                  {rotatingItems[currentItemIndex]}
+                  You're One Call Away From..
+                </h1>
+                
+                {/* Rotating Items */}
+                <div className="min-h-[60px] flex items-center">
+                  <div
+                    ref={rotatingTextRef}
+                    key={currentItemIndex}
+                    className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-accent"
+                    data-testid="text-rotating-item"
+                  >
+                    {rotatingItems[currentItemIndex]}
+                  </div>
                 </div>
+              </div>
+
+              {/* Subhead */}
+              <p
+                ref={descriptionRef}
+                className="text-lg lg:text-xl text-muted-foreground leading-relaxed scramble-desc max-w-2xl"
+                data-testid="text-hero-description"
+              >
+                Done‑For‑You Growth Systems That Attract, Convert, And Retain Your Dream Clients Without Tech overwhelm, Guesswork, Or Hiring A Huge Team.
+              </p>
+
+              {/* CTA Button */}
+              <div className="pt-4">
+                <Button
+                  size="lg"
+                  onClick={scrollToContact}
+                  className="bg-transparent text-yellow-500 border-2 border-yellow-500/50 group text-lg px-8 py-6 rounded-full hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.5)]"
+                  data-testid="button-hero-cta"
+                  style={{
+                    animation: 'blink 2s ease-in-out infinite'
+                  }}
+                >
+                  Free 10-Minute Audit Call
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
               </div>
             </div>
 
-            {/* Subhead */}
-            <p
-              ref={descriptionRef}
-              className="text-xl lg:text-2xl text-muted-foreground max-w-4xl leading-relaxed scramble-desc"
-              data-testid="text-hero-description"
+            {/* Team Spirit SVG - Right Side */}
+            <div 
+              ref={cartoonRef}
+              className="flex items-center justify-center lg:justify-end opacity-0 order-1 lg:order-2"
             >
-              Done‑For‑You Growth Systems That Attract, Convert, And Retain Your Dream Clients Without Tech overwhelm, Guesswork, Or Hiring A Huge Team.
-            </p>
-
-            {/* CTA Button */}
-            <div className="flex justify-center pt-8">
-              <Button
-                size="lg"
-                onClick={scrollToContact}
-                className="bg-transparent text-yellow-500 border-2 border-yellow-500/50 group text-lg px-8 py-6 rounded-full hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.5)]"
-                data-testid="button-hero-cta"
-              >
-                Free 10-Minute Audit Call
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <img 
+                src={teamSpiritSvg} 
+                alt="Team spirit illustration" 
+                className="w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl h-auto object-contain"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* IMAGINE THIS Section */}
-      <section className="relative py-20 lg:py-32 bg-gradient-to-b from-background to-background/50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 ref={imagineHeadingRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-              IMAGINE THIS<span className="text-yellow-500">...</span>
-            </h2>
+      <section className="relative py-20 lg:py-32 overflow-hidden bg-black">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-amber-500/5 to-yellow-600/5 animate-gradient"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(234,179,8,0.05),transparent_50%)] animate-pulse-slow"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
+          {/* Heading with SVG */}
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 mb-20">
+            <div className="flex-shrink-0 order-2 lg:order-1">
+              <div ref={goodTeamSvgRef} className="w-56 h-56 lg:w-80 lg:h-80">
+                <img src={goodTeamSvg} alt="Team collaboration" className="w-full h-full object-contain drop-shadow-2xl" />
+              </div>
+            </div>
+            <div className="text-center lg:text-left order-1 lg:order-2">
+              <h2 ref={imagineHeadingRef} className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-white via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
+                  IMAGINE THIS
+                </span>
+                <span className="text-yellow-500 animate-pulse">...</span>
+              </h2>
+              <p className="text-2xl lg:text-3xl text-white/60 max-w-2xl font-light leading-relaxed">
+                Your business transformation awaits
+              </p>
+            </div>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center max-w-6xl mx-auto">
-            {/* Before Section */}
-            <div ref={beforeSectionRef} className="relative p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-red-950/20 to-red-900/10 border border-red-900/30 backdrop-blur-sm">
-              <div className="absolute -top-4 left-8">
-                <span data-badge className="bg-red-500 text-white px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
-                  Before
-                </span>
-              </div>
-              <div className="mt-6 space-y-6">
-                <p data-before-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                  You never know where the next client is coming from.
-                </p>
-                <p data-before-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                  Revenue swings.
-                </p>
-                <p data-before-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                  You're doing everything yourself.
-                </p>
-              </div>
-              {/* Chaos visual element */}
-              <div data-visual className="mt-8 opacity-20">
-                <div className="h-32 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full h-1 bg-red-500/30 transform rotate-12"></div>
-                    <div className="w-full h-1 bg-red-500/30 transform -rotate-12"></div>
-                    <div className="w-1 h-full bg-red-500/30 transform rotate-45"></div>
-                    <div className="w-1 h-full bg-red-500/30 transform -rotate-45"></div>
-                  </div>
-                </div>
-              </div>
+          {/* After texts appearing one by one */}
+          <div ref={afterSectionRef} className="max-w-4xl mx-auto space-y-8">
+            <div data-after-item className="flex items-start gap-4 p-6 rounded-2xl bg-gradient-to-r from-yellow-500/10 to-transparent border-l-4 border-yellow-500 backdrop-blur-sm hover:from-yellow-500/20 transition-all duration-300">
+              <CheckCircle2 className="flex-shrink-0 w-8 h-8 text-yellow-500 mt-1" />
+              <p className="text-2xl lg:text-3xl text-white leading-relaxed font-medium">
+                Your calendar stays booked.
+              </p>
             </div>
-
-            {/* Arrow */}
-            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              <div className="bg-background border-4 border-yellow-500 rounded-full p-4 shadow-lg">
-                <ArrowRight className="w-8 h-8 text-yellow-500" />
-              </div>
+            
+            <div data-after-item className="flex items-start gap-4 p-6 rounded-2xl bg-gradient-to-r from-yellow-600/10 to-transparent border-l-4 border-yellow-600 backdrop-blur-sm hover:from-yellow-600/20 transition-all duration-300">
+              <CheckCircle2 className="flex-shrink-0 w-8 h-8 text-yellow-600 mt-1" />
+              <p className="text-2xl lg:text-3xl text-white leading-relaxed font-medium">
+                Your offers sell consistently.
+              </p>
             </div>
-
-            {/* After Section */}
-            <div ref={afterSectionRef} className="relative p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-green-950/20 to-emerald-900/10 border border-green-900/30 backdrop-blur-sm">
-              <div className="absolute -top-4 left-8">
-                <span data-badge className="bg-green-500 text-white px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
-                  After
-                </span>
-              </div>
-              <div className="mt-6 space-y-6">
-                <p data-after-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                  Your calendar stays booked.
-                </p>
-                <p data-after-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                  Your offers sell consistently.
-                </p>
-                <p data-after-item className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                  You can finally focus on delivery, not chasing.
-                </p>
-              </div>
-              {/* Growth path visual element */}
-              <div data-visual className="mt-8 opacity-20">
-                <div className="h-32 relative">
-                  <svg viewBox="0 0 200 100" className="w-full h-full">
-                    <path
-                      d="M 10 90 Q 60 70, 100 50 T 190 10"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      className="text-green-500"
-                    />
-                    <circle cx="190" cy="10" r="5" className="fill-green-500" />
-                  </svg>
-                </div>
-              </div>
+            
+            <div data-after-item className="flex items-start gap-4 p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 to-transparent border-l-4 border-amber-500 backdrop-blur-sm hover:from-amber-500/20 transition-all duration-300">
+              <CheckCircle2 className="flex-shrink-0 w-8 h-8 text-amber-500 mt-1" />
+              <p className="text-2xl lg:text-3xl text-white leading-relaxed font-medium">
+                You can finally focus on delivery, not chasing.
+              </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section ref={horizontalRef} className="horizontal overflow-hidden flex items-center" aria-label="Horizontal marquee">
-        <div className="w-full">
-          <h3 className="horizontal__text text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight">
-            Debut your journey with us
-          </h3>
         </div>
       </section>
     </>

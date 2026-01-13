@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 
 if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,28 +9,23 @@ if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
 const benefits = [
   {
     id: 1,
-    title: "1:1 Strategy Call",
-    description: "Personal session to map your Growth Engine and identify your unique opportunities.",
-    position: "top",
+    title: "Website Creation",
+    description: "Custom, high-converting websites designed to turn visitors into customers with modern UX and mobile-first approach.",
   },
   {
     id: 2,
-    title: "Customized Scale Plan",
-    description: "Tailored roadmap covering offers, funnels, and traffic strategies for your business.",
-    position: "middle",
-    isPrincipal: true,
+    title: "Social Media Management",
+    description: "Strategic content creation and community management across all platforms to build your brand presence.",
   },
   {
     id: 3,
-    title: "Done-For-You Pieces",
-    description: "We handle the implementation so you can focus on what you do best.",
-    position: "bottom",
+    title: "Business Growth Strategy",
+    description: "Data-driven roadmap covering offers, funnels, and scaling strategies tailored to your business goals.",
   },
   {
     id: 4,
-    title: "30-90 Days Follow-Up",
-    description: "Ongoing guidance and support to ensure your success and momentum.",
-    position: "end",
+    title: "Mobile App Development",
+    description: "Native and cross-platform mobile applications that enhance customer experience and drive engagement.",
   },
 ];
 
@@ -41,7 +34,6 @@ export function WhatYouGetSection() {
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const cardsContainerRef = useRef<HTMLDivElement | null>(null);
   const closingRef = useRef<HTMLDivElement | null>(null);
-  const [activeCardIndex, setActiveCardIndex] = useState(1);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -66,94 +58,152 @@ export function WhatYouGetSection() {
         },
       });
 
-      // Initial card animations
+      // Card animations - enhanced stagger entrance
       const cards = cardsContainer.querySelectorAll('[data-card]');
       
       cards.forEach((card, index) => {
-        const isPrincipal = card.getAttribute('data-principal') === 'true';
-        
-        // Set initial positions based on card position
-        if (index === 0) {
-          gsap.set(card, { y: -100, scale: 0.85, opacity: 0 });
-        } else if (index === 1) {
-          gsap.set(card, { y: 0, scale: 0.9, opacity: 0 });
-        } else if (index === 2) {
-          gsap.set(card, { y: 100, scale: 0.85, opacity: 0 });
-        } else {
-          gsap.set(card, { y: 150, scale: 0.8, opacity: 0 });
-        }
+        // Set initial state with dynamic positioning
+        gsap.set(card, { 
+          opacity: 0, 
+          y: 80,
+          scale: 0.85,
+          rotation: index % 2 === 0 ? -5 : 5
+        });
 
-        // Animate cards into position vertically
+        // Animate cards in with stagger and rotation
         gsap.to(card, {
-          y: 0,
-          scale: isPrincipal ? 1.05 : 1,
           opacity: 1,
+          y: 0,
+          scale: 1,
+          rotation: 0,
           duration: 1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: cardsContainer,
-            start: "top 70%",
+            start: "top 75%",
             toggleActions: "play none none none",
           },
           delay: index * 0.2,
         });
 
-        // Card content animations
+        // Card content animations with enhanced effects
         const number = card.querySelector('[data-number]');
         const title = card.querySelector('[data-title]');
         const description = card.querySelector('[data-description]');
         const decorator = card.querySelector('[data-decorator]');
 
-        gsap.from(number, {
-          opacity: 0,
-          scale: 0,
-          rotation: isPrincipal ? 360 : -180,
-          duration: isPrincipal ? 0.8 : 0.6,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: cardsContainer,
-            start: "top 70%",
-            toggleActions: "play none none none",
-          },
-          delay: index * 0.2 + 0.3,
+        if (number) {
+          gsap.set(number, { scale: 0, rotation: -360, opacity: 0 });
+          gsap.to(number, {
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            duration: 0.8,
+            ease: "back.out(2)",
+            scrollTrigger: {
+              trigger: cardsContainer,
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+            delay: index * 0.2 + 0.3,
+          });
+        }
+
+        if (title) {
+          gsap.set(title, { opacity: 0, y: 30, x: -20 });
+          gsap.to(title, {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: cardsContainer,
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+            delay: index * 0.2 + 0.4,
+          });
+        }
+
+        if (description) {
+          gsap.set(description, { opacity: 0, y: 20 });
+          gsap.to(description, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: cardsContainer,
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+            delay: index * 0.2 + 0.5,
+          });
+        }
+
+        if (decorator) {
+          gsap.set(decorator, { scaleX: 0, transformOrigin: "left center" });
+          gsap.to(decorator, {
+            scaleX: 1,
+            duration: 0.9,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: cardsContainer,
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+            delay: index * 0.2 + 0.6,
+          });
+        }
+
+        // Add hover animations with smooth transitions
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, {
+            y: -10,
+            scale: 1.03,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+          if (number) {
+            gsap.to(number, {
+              scale: 1.2,
+              rotation: 10,
+              duration: 0.5,
+              ease: "back.out(1.7)"
+            });
+          }
+          if (title) {
+            gsap.to(title, {
+              x: 5,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          }
         });
 
-        gsap.from(title, {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cardsContainer,
-            start: "top 70%",
-            toggleActions: "play none none none",
-          },
-          delay: index * 0.2 + 0.4,
-        });
-
-        gsap.from(description, {
-          opacity: 0,
-          y: 20,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cardsContainer,
-            start: "top 70%",
-            toggleActions: "play none none none",
-          },
-          delay: index * 0.2 + 0.5,
-        });
-
-        gsap.from(decorator, {
-          scaleX: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cardsContainer,
-            start: "top 70%",
-            toggleActions: "play none none none",
-          },
-          delay: index * 0.2 + 0.6,
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            y: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+          if (number) {
+            gsap.to(number, {
+              scale: 1,
+              rotation: 0,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          }
+          if (title) {
+            gsap.to(title, {
+              x: 0,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          }
         });
       });
 
@@ -173,219 +223,141 @@ export function WhatYouGetSection() {
 
       // Animate text elements inside closing
       const closingText = closing?.querySelectorAll('p');
-      gsap.from(closingText, {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: closing,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
+      if (closingText) {
+        gsap.from(closingText, {
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: closing,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
     }, section);
 
     return () => ctx.revert();
   }, []);
 
-  // Rolling animation effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveCardIndex((prev) => (prev + 1) % benefits.length);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Apply rolling animation when active card changes
-  useEffect(() => {
-    const cardsContainer = cardsContainerRef.current;
-    if (!cardsContainer) return;
-
-    const cards = cardsContainer.querySelectorAll('[data-card]');
-    
-    cards.forEach((card, index) => {
-      const isActive = index === activeCardIndex;
-      
-      // Calculate new scale and position based on distance from active card
-      let targetScale = 0.8;
-      let targetY = 150;
-      let targetOpacity = 0.5;
-      
-      if (isActive) {
-        targetScale = 1.05;
-        targetY = 0;
-        targetOpacity = 1;
-      } else if (index === (activeCardIndex - 1 + benefits.length) % benefits.length) {
-        targetScale = 0.85;
-        targetY = -100;
-        targetOpacity = 0.7;
-      } else if (index === (activeCardIndex + 1) % benefits.length) {
-        targetScale = 0.85;
-        targetY = 100;
-        targetOpacity = 0.7;
-      } else if (index === (activeCardIndex + 2) % benefits.length) {
-        targetScale = 0.8;
-        targetY = 150;
-        targetOpacity = 0.6;
-      }
-      
-      gsap.to(card, {
-        scale: targetScale,
-        y: targetY,
-        opacity: targetOpacity,
-        duration: 0.8,
-        ease: "power2.inOut",
-      });
-    });
-  }, [activeCardIndex]);
-
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-36 overflow-hidden bg-gradient-to-b from-background/50 to-background">
-      {/* Background elements */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl" />
+    <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-black">
+      {/* Grid pattern background - Swiss design */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(to right, #FFC100 1px, transparent 1px),
+            linear-gradient(to bottom, #FFC100 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px'
+        }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Heading */}
-        <div className="text-center mb-16 lg:mb-24">
-          <h2 ref={headingRef} className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
+        {/* Heading - Swiss Style */}
+        <div className="mb-20">
+          <h2 ref={headingRef} className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white">
             What You Get<span className="text-yellow-500">...</span>
           </h2>
+          <div className="h-1 w-32 bg-yellow-500 mt-6" />
         </div>
 
-        {/* Card Stack with Rolling Animation */}
-        <div ref={cardsContainerRef} className="max-w-5xl mx-auto mb-16 lg:mb-24 relative h-[600px] flex items-center justify-center">
-          <div className="absolute inset-0 flex items-center justify-center">
+        {/* Service Cards - Swiss Grid */}
+        <div ref={cardsContainerRef} className="max-w-7xl mx-auto mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
             {benefits.map((benefit, index) => (
               <div
                 key={benefit.id}
                 data-card
-                data-principal={benefit.isPrincipal}
-                className={`group absolute backdrop-blur-xl border transition-all duration-500 ${
-                  activeCardIndex === index
-                    ? 'bg-gradient-to-br from-yellow-500/10 to-background/60 border-yellow-500/40 hover:border-yellow-500/60 hover:shadow-[0_30px_80px_-15px_rgba(234,179,8,0.4)] max-w-4xl z-30'
-                    : 'bg-background/40 border-border/50 hover:border-yellow-500/20 hover:shadow-[0_20px_60px_-15px_rgba(234,179,8,0.15)] max-w-3xl z-10'
-                } rounded-[2rem] p-8 lg:p-10 w-full`}
+                className={`group relative bg-gradient-to-br from-zinc-900 to-black border-2 transition-all duration-500 hover:bg-zinc-900 ${
+                  index === 0 ? 'border-r-0 border-b-0 border-yellow-500/30' :
+                  index === 1 ? 'border-b-0 border-yellow-500/30' :
+                  index === 2 ? 'border-r-0 border-yellow-500/30' :
+                  'border-yellow-500/30'
+                }`}
                 style={{ opacity: 0 }}
               >
-                {/* Gradient overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem] ${
-                  activeCardIndex === index ? 'from-yellow-500/10 via-transparent to-transparent' : 'from-yellow-500/5 via-transparent to-transparent'
-                }`} />
-                
-                {/* Active card glow effect */}
-                {activeCardIndex === index && (
-                  <div className="absolute inset-0 opacity-50">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
-                  </div>
-                )}
-                
-                {/* Content */}
-                <div className="relative flex items-start gap-6">
-                  {/* Number Badge */}
-                  <div 
+                {/* Large Number Badge - Swiss Style */}
+                <div className="absolute top-0 left-0 w-20 h-20 bg-yellow-500 flex items-center justify-center">
+                  <span 
                     data-number
-                    className={`flex-shrink-0 rounded-2xl border flex items-center justify-center ${
-                      activeCardIndex === index
-                        ? 'w-16 h-16 bg-yellow-500/30 border-yellow-500/60'
-                        : 'w-14 h-14 bg-yellow-500/20 border-yellow-500/40'
-                    }`}
+                    className="font-black text-black text-4xl"
                   >
-                    <span className={`font-bold text-yellow-500 ${activeCardIndex === index ? 'text-3xl' : 'text-2xl'}`}>
-                      {benefit.id}
-                    </span>
-                  </div>
-
-                  {/* Text Content */}
-                  <div className="flex-1 space-y-3">
-                    <h3 data-title className={`font-bold ${
-                      activeCardIndex === index ? 'text-3xl lg:text-4xl' : 'text-2xl lg:text-3xl'
-                    }`}>
-                      {benefit.title}
-                    </h3>
-                    <p data-description className={`text-muted-foreground leading-relaxed ${
-                      activeCardIndex === index ? 'text-xl' : 'text-lg'
-                    }`}>
-                      {benefit.description}
-                    </p>
-                    {/* Decorator line */}
-                    <div 
-                      data-decorator
-                      className={`h-px bg-gradient-to-r mt-4 ${
-                        activeCardIndex === index
-                          ? 'from-yellow-500/50 via-yellow-500/20 to-transparent'
-                          : 'from-yellow-500/30 via-yellow-500/10 to-transparent'
-                      }`}
-                    />
-                  </div>
+                    {benefit.id}
+                  </span>
                 </div>
 
-                {/* Corner accent */}
-                <div className={`absolute bottom-0 right-0 rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                  activeCardIndex === index
-                    ? 'w-32 h-32 bg-gradient-to-tl from-yellow-500/20 to-transparent'
-                    : 'w-24 h-24 bg-gradient-to-tl from-yellow-500/10 to-transparent'
-                }`} />
+                {/* Content */}
+                <div className="p-12 pt-28">
+                  <h3 
+                    data-title 
+                    className="font-black text-white text-3xl lg:text-4xl tracking-tight mb-6 leading-tight"
+                  >
+                    {benefit.title}
+                  </h3>
+                  
+                  {/* Horizontal divider - Swiss element */}
+                  <div 
+                    data-decorator
+                    className="h-1 w-20 bg-yellow-500 mb-6"
+                  />
+                  
+                  <p 
+                    data-description 
+                    className="text-gray-300 leading-relaxed text-base lg:text-lg"
+                  >
+                    {benefit.description}
+                  </p>
+                </div>
+
+                {/* Decorative corner element */}
+                <div className="absolute bottom-0 right-0 w-16 h-16 border-l-4 border-t-4 border-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Closing Message */}
+        {/* Closing Message - Swiss Typography */}
         <div 
           ref={closingRef}
-          className="max-w-5xl mx-auto text-center relative py-16 lg:py-20"
+          className="max-w-5xl mx-auto text-center py-16"
         >
-          {/* Top accent line */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent" />
+          {/* Top line accent */}
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent mb-12" />
           
-          {/* Main text */}
-          <div className="space-y-6 relative z-10">
-            <p className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
-              <span className="text-foreground">No pressure. If we're not a fit, </span>
-              <span className="bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500 bg-clip-text text-transparent">
+          <div className="space-y-8">
+            <p className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight">
+              <span className="text-white">No pressure. If we're not a fit, </span>
+              <span className="text-yellow-500">
                 you'll still leave with a clear growth roadmap
               </span>
             </p>
             
-            {/* (FOR FREE) - Large and prominent */}
-            <div className="relative inline-block">
-              <div className="absolute -inset-6 bg-gradient-to-r from-yellow-500/20 via-yellow-500/30 to-yellow-500/20 rounded-full blur-2xl" />
-              <p className="relative text-4xl sm:text-5xl lg:text-6xl font-bold text-yellow-500 tracking-wide">
-                (FOR FREE)
-              </p>
+            {/* Large (FOR FREE) badge */}
+            <div className="inline-block">
+              <div className="bg-yellow-500 px-12 py-6">
+                <p className="text-4xl sm:text-5xl lg:text-6xl font-black text-black tracking-tight">
+                  (FOR FREE)
+                </p>
+              </div>
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button - Swiss Style */}
             <div className="pt-8">
-              <Button
-                size="lg"
-                onClick={() => {
-                  const element = document.querySelector("#contact");
-                  if (element) {
-                    element.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="bg-transparent text-yellow-500 border-2 border-yellow-500/50 group text-lg px-8 py-6 rounded-full hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-all duration-300 hover:shadow-[0_0_20px_rgba(234,179,8,0.5)]"
+              <a
+                href="#contact"
+                className="group relative inline-block bg-yellow-500 text-black px-12 py-6 text-lg lg:text-xl font-black tracking-tight uppercase transition-all duration-300 hover:bg-white hover:shadow-[0_0_40px_rgba(255,193,0,0.5)]"
               >
-                Claim Your Free Roadmap Call
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+                <span className="relative z-10">Claim Your Free Roadmap Call</span>
+                <div className="absolute inset-0 border-4 border-yellow-500 translate-x-2 translate-y-2 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
+              </a>
             </div>
           </div>
 
-          {/* Bottom accent line */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent" />
-
-          {/* Decorative elements */}
-          <div className="absolute top-1/2 left-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -translate-y-1/2" />
-          <div className="absolute top-1/2 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl -translate-y-1/2" />
+          {/* Bottom line accent */}
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent mt-12" />
         </div>
       </div>
     </section>

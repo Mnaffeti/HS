@@ -1,11 +1,10 @@
 import { ArrowUp } from "lucide-react";
-import { SiLinkedin, SiGithub, SiX } from "react-icons/si";
+import { SiLinkedin, SiFacebook } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 
 const socialLinks = [
-  { icon: SiLinkedin, href: "#", label: "LinkedIn" },
-  { icon: SiGithub, href: "#", label: "GitHub" },
-  { icon: SiX, href: "#", label: "X" },
+  { icon: SiLinkedin, href: "https://www.linkedin.com/company/hemma-consulting", label: "LinkedIn" },
+  { icon: SiFacebook, href: "https://www.facebook.com/people/Hemma-Consulting/61585817244400/", label: "Facebook" },
 ];
 
 const footerLinks = [
@@ -73,7 +72,7 @@ export function Footer() {
                   aria-label={link.label}
                   data-testid={`link-social-${link.label.toLowerCase()}`}
                 >
-                  <link.icon className="h-5 w-5" />
+                  <link.icon className="h-7 w-7" />
                 </a>
               ))}
             </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import telecommutingSvg from "../assests/Telecommuting-rafiki.svg";
 
 if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -10,22 +11,25 @@ export function IsThisForYouSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const descriptionRef = useRef<HTMLParagraphElement | null>(null);
-  const cardsContainerRef = useRef<HTMLDivElement | null>(null);
+  const svgRef = useRef<HTMLImageElement | null>(null);
+  const notFitCardRef = useRef<HTMLDivElement | null>(null);
+  const perfectFitCardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const heading = headingRef.current;
     const description = descriptionRef.current;
-    const cardsContainer = cardsContainerRef.current;
+    const svg = svgRef.current;
+    const notFitCard = notFitCardRef.current;
+    const perfectFitCard = perfectFitCardRef.current;
 
-    if (!section || !heading || !description || !cardsContainer) return;
+    if (!section || !heading || !description || !svg || !notFitCard || !perfectFitCard) return;
 
     const ctx = gsap.context(() => {
-      // Heading animation with split reveal
+      // Heading animation
       gsap.from(heading, {
         opacity: 0,
         y: 60,
-        scale: 0.95,
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {
@@ -49,70 +53,61 @@ export function IsThisForYouSection() {
         },
       });
 
-      // Cards stagger animation
-      const cards = cardsContainer.querySelectorAll('[data-card]');
-      
-      cards.forEach((card, index) => {
-        const items = card.querySelectorAll('[data-item]');
-        const badge = card.querySelector('[data-badge]');
-        const divider = card.querySelector('[data-divider]');
-        
-        // Card entrance
-        gsap.from(card, {
-          opacity: 0,
-          y: 80,
-          scale: 0.9,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        });
+      // SVG entrance animation
+      gsap.from(svg, {
+        opacity: 0,
+        scale: 0.5,
+        rotation: -15,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.5)",
+        scrollTrigger: {
+          trigger: svg,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
 
-        // Badge pop
-        gsap.from(badge, {
-          scale: 0,
-          opacity: 0,
-          duration: 0.6,
-          delay: 0.3,
-          ease: "elastic.out(1, 0.5)",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 75%",
-            toggleActions: "play none none none",
-          },
-        });
+      // Floating animation for SVG
+      gsap.to(svg, {
+        y: -25,
+        duration: 2.8,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
 
-        // Divider draw
-        gsap.from(divider, {
-          scaleX: 0,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.4,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 75%",
-            toggleActions: "play none none none",
-          },
-        });
+      // Subtle rotation
+      gsap.to(svg, {
+        rotation: 3,
+        duration: 3.5,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
 
-        // Items stagger with unique animations
-        gsap.from(items, {
-          opacity: 0,
-          x: index === 0 ? -40 : 40,
-          duration: 0.6,
-          stagger: 0.15,
-          delay: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 70%",
-            toggleActions: "play none none none",
-          },
-        });
+      // Cards entrance
+      gsap.from(notFitCard, {
+        opacity: 0,
+        x: -100,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: notFitCard,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.from(perfectFitCard, {
+        opacity: 0,
+        x: 100,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: perfectFitCard,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
       });
     }, section);
 
@@ -120,143 +115,177 @@ export function IsThisForYouSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-36 overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl" />
+    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-black overflow-hidden">
+      {/* Grid pattern background - Swiss design */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(to right, #FFC100 1px, transparent 1px),
+            linear-gradient(to bottom, #FFC100 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px'
+        }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-20">
-          <h2 ref={headingRef} className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-            Is This For You<span className="text-yellow-500">?</span>
+        <div className="mb-16 lg:mb-24">
+          <h2 ref={headingRef} className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-4">
+            Is This For You?
           </h2>
-          <p ref={descriptionRef} className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p ref={descriptionRef} className="text-xl lg:text-2xl text-gray-400 font-light">
             Let's make sure we're the right fit to work together
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div ref={cardsContainerRef} className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
-          {/* NOT A FIT Card */}
-          <div 
-            data-card
-            className="group relative overflow-hidden rounded-[2rem] border border-border/50 bg-background/40 backdrop-blur-xl p-8 lg:p-12 hover:border-red-500/30 transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(239,68,68,0.3)]"
-          >
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Main Split-Screen Comparison */}
+        <div className="relative">
+          {/* Vertical Divider Line - Swiss Element */}
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-yellow-500 to-transparent transform -translate-x-1/2" />
+          
+          <div className="grid lg:grid-cols-2 gap-0">
             
-            {/* Content */}
-            <div className="relative">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 mb-8">
-                <div data-badge className="flex items-center justify-center w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20">
-                  <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+            {/* LEFT SIDE - NOT A FIT */}
+            <div ref={notFitCardRef} className="relative border-r-0 lg:border-r-4 border-red-500/20 pr-0 lg:pr-16">
+              {/* Large X Icon - Swiss Geometric */}
+              <div className="mb-8">
+                <div className="w-24 h-24 border-4 border-red-500 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="square" strokeLinejoin="miter" d="M6 6L18 18M18 6L6 18" />
+                    </svg>
+                  </div>
                 </div>
-                <span className="text-sm font-semibold text-red-500 uppercase tracking-wider">Not A Fit</span>
+              </div>
+
+              {/* Label */}
+              <div className="mb-6">
+                <span className="text-red-500 text-sm font-black tracking-[0.3em] uppercase">
+                  Not A Fit
+                </span>
+                <div className="h-px w-32 bg-red-500 mt-2" />
               </div>
 
               {/* Title */}
-              <h3 className="text-2xl lg:text-3xl font-bold mb-6">
-                Skip This If You...
+              <h3 className="text-3xl lg:text-5xl font-black tracking-tighter text-white mb-12 leading-tight">
+                Skip This<br />If You...
               </h3>
 
-              {/* Divider */}
-              <div data-divider className="h-px bg-gradient-to-r from-red-500/50 to-transparent mb-8" />
-
-              {/* Items */}
-              <div className="space-y-6">
-                <div data-item className="flex items-start gap-4 group/item">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center mt-1">
-                    <div className="w-2 h-2 rounded-full bg-red-500" />
+              {/* Checklist Items */}
+              <div className="space-y-8">
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 border-2 border-red-500 flex items-center justify-center text-red-500 text-2xl font-black">
+                    ×
                   </div>
-                  <p className="text-lg text-muted-foreground group-hover/item:text-foreground transition-colors">
-                    Want "get rich quick" or overnight results
-                  </p>
+                  <div>
+                    <p className="text-white text-lg lg:text-xl font-medium leading-relaxed">
+                      Want "get rich quick" or overnight results
+                    </p>
+                  </div>
                 </div>
-                <div data-item className="flex items-start gap-4 group/item">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center mt-1">
-                    <div className="w-2 h-2 rounded-full bg-red-500" />
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 border-2 border-red-500 flex items-center justify-center text-red-500 text-2xl font-black">
+                    ×
                   </div>
-                  <p className="text-lg text-muted-foreground group-hover/item:text-foreground transition-colors">
-                    Aren't willing to implement or delegate
-                  </p>
+                  <div>
+                    <p className="text-white text-lg lg:text-xl font-medium leading-relaxed">
+                      Aren't willing to implement or delegate
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Corner accent */}
-            <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-red-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* RIGHT SIDE - PERFECT FIT */}
+            <div ref={perfectFitCardRef} className="relative pl-0 lg:pl-16 mt-16 lg:mt-0">
+              {/* Large Checkmark Icon - Swiss Geometric */}
+              <div className="mb-8">
+                <div className="w-24 h-24 bg-yellow-500 relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="square" strokeLinejoin="miter" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Label */}
+              <div className="mb-6">
+                <span className="text-yellow-500 text-sm font-black tracking-[0.3em] uppercase">
+                  Perfect Fit
+                </span>
+                <div className="h-px w-32 bg-yellow-500 mt-2" />
+              </div>
+
+              {/* Title */}
+              <h3 className="text-3xl lg:text-5xl font-black tracking-tighter text-white mb-12 leading-tight">
+                Perfect<br />If You...
+              </h3>
+
+              {/* Checklist Items */}
+              <div className="space-y-8">
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 bg-yellow-500 flex items-center justify-center text-black text-2xl font-black">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="text-white text-lg lg:text-xl font-medium leading-relaxed">
+                      Are already getting some sales but want to grow faster
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 bg-yellow-500 flex items-center justify-center text-black text-2xl font-black">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="text-white text-lg lg:text-xl font-medium leading-relaxed">
+                      Are ready to follow a plan and take action
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 bg-yellow-500 flex items-center justify-center text-black text-2xl font-black">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="text-white text-lg lg:text-xl font-medium leading-relaxed">
+                      Value long‑term, predictable growth
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* PERFECT FIT Card */}
-          <div 
-            data-card
-            className="group relative overflow-hidden rounded-[2rem] border border-yellow-500/30 bg-gradient-to-br from-yellow-500/5 to-background/40 backdrop-blur-xl p-8 lg:p-12 hover:border-yellow-500/50 transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(234,179,8,0.4)]"
-          >
-            {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            {/* Glowing effect */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent" />
+          {/* Bottom SVG - Centered */}
+          <div className="mt-20 flex flex-col items-center">
+            <div className="relative w-full max-w-lg lg:max-w-2xl">
+              <img 
+                ref={svgRef}
+                src={telecommutingSvg} 
+                alt="Telecommuting" 
+                className="w-full h-auto drop-shadow-2xl"
+              />
+              
+              {/* Decorative elements - Swiss geometric shapes */}
+              <div className="absolute -top-8 -left-8 w-20 h-20 border-4 border-yellow-500 opacity-20" />
+              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-yellow-500 opacity-10" />
+              <div className="absolute top-1/2 -right-12 w-16 h-16 border-4 border-red-500 opacity-10" />
             </div>
 
-            {/* Content */}
-            <div className="relative">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 mb-8">
-                <div data-badge className="flex items-center justify-center w-12 h-12 rounded-2xl bg-yellow-500/20 border border-yellow-500/40">
-                  <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="text-sm font-semibold text-yellow-500 uppercase tracking-wider">Perfect Fit</span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-2xl lg:text-3xl font-bold mb-6">
-                Perfect If You...
-              </h3>
-
-              {/* Divider */}
-              <div data-divider className="h-px bg-gradient-to-r from-yellow-500/50 to-transparent mb-8" />
-
-              {/* Items */}
-              <div className="space-y-6">
-                <div data-item className="flex items-start gap-4 group/item">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-lg bg-yellow-500/20 flex items-center justify-center mt-1">
-                    <div className="w-2 h-2 rounded-full bg-yellow-500" />
-                  </div>
-                  <p className="text-lg text-muted-foreground group-hover/item:text-foreground transition-colors">
-                    Are already getting some sales but want to grow faster
-                  </p>
-                </div>
-                <div data-item className="flex items-start gap-4 group/item">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-lg bg-yellow-500/20 flex items-center justify-center mt-1">
-                    <div className="w-2 h-2 rounded-full bg-yellow-500" />
-                  </div>
-                  <p className="text-lg text-muted-foreground group-hover/item:text-foreground transition-colors">
-                    Are ready to follow a plan and take action
-                  </p>
-                </div>
-                <div data-item className="flex items-start gap-4 group/item">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-lg bg-yellow-500/20 flex items-center justify-center mt-1">
-                    <div className="w-2 h-2 rounded-full bg-yellow-500" />
-                  </div>
-                  <p className="text-lg text-muted-foreground group-hover/item:text-foreground transition-colors">
-                    Value long‑term, predictable growth over quick hacks
-                  </p>
-                </div>
-              </div>
+            {/* CTA Button - Swiss Style */}
+            <div className="mt-16 flex flex-col items-center gap-6">
+              <div className="h-px w-32 bg-yellow-500" />
+              <a
+                href="#contact"
+                className="group relative bg-yellow-500 text-black px-12 py-6 text-lg lg:text-xl font-black tracking-tight uppercase transition-all duration-300 hover:bg-white hover:shadow-[0_0_40px_rgba(255,193,0,0.5)]"
+              >
+                <span className="relative z-10">Let's Work Together</span>
+                <div className="absolute inset-0 border-4 border-yellow-500 translate-x-2 translate-y-2 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
+              </a>
+              <div className="h-px w-32 bg-yellow-500" />
             </div>
-
-            {/* Corner accent */}
-            <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-yellow-500/20 to-transparent rounded-tl-full opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
           </div>
         </div>
       </div>

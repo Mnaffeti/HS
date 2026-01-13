@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import teamWorkSvg from "../assests/Team work.svg";
 
 if (typeof window !== "undefined" && gsap && "registerPlugin" in gsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -12,34 +13,34 @@ const scaleServices = [
     number: "01",
     title: "Growth Engine Map",
     description: "We map out exactly how strangers become superfans in your world, step by step so growth stops being random.",
-    icon: "map",
   },
   {
     id: "2",
     number: "02",
     title: "Offer & Messaging Upgrade",
     description: "We sharpen your offer and messaging so your ideal clients instantly feel 'This is for me'.",
-    icon: "message",
   },
   {
     id: "3",
     number: "03",
     title: "Traffic & Conversion Machine",
     description: "We plug in simple campaigns that bring you leads consistently and turn them into paying clients with a high converting website.",
-    icon: "traffic",
   },
 ];
 
 export function ServicesSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
-  const cardsContainerRef = useRef<HTMLDivElement | null>(null);
+  const teamWorkSvgRef = useRef<HTMLImageElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const section = sectionRef.current;
     const heading = headingRef.current;
-    if (!section || !heading) return;
+    const teamWork = teamWorkSvgRef.current;
+    const card = cardRef.current;
+    if (!section || !heading || !teamWork || !card) return;
 
     const ctx = gsap.context(() => {
       // Animate heading
@@ -54,21 +55,43 @@ export function ServicesSection() {
           toggleActions: "play none none none",
         },
       });
-    }, section);
 
-    return () => ctx.revert();
-  }, []);
+      // Animate SVG entrance
+      gsap.from(teamWork, {
+        opacity: 0,
+        scale: 0.5,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.5)",
+        scrollTrigger: {
+          trigger: teamWork,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
 
-  // Simple card animation on scroll
-  useEffect(() => {
-    const cards = document.querySelectorAll('.service-card');
-    if (cards.length === 0) return;
+      // Floating animation for SVG
+      gsap.to(teamWork, {
+        y: -20,
+        duration: 2.5,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
 
-    cards.forEach((card, index) => {
+      // Subtle rotation
+      gsap.to(teamWork, {
+        rotation: 5,
+        duration: 3.5,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+
+      // Card entrance
       gsap.from(card, {
         opacity: 0,
-        y: 50,
-        duration: 0.8,
+        x: 100,
+        duration: 1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: card,
@@ -76,11 +99,9 @@ export function ServicesSection() {
           toggleActions: "play none none none",
         },
       });
-    });
+    }, section);
 
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
   // Auto-rotate cards every 5 seconds
@@ -92,122 +113,130 @@ export function ServicesSection() {
     return () => clearInterval(interval);
   }, []);
 
-  // Animate active card change
-  useEffect(() => {
-    const cards = document.querySelectorAll('.service-card');
-    cards.forEach((card, index) => {
-      if (index === activeIndex) {
-        gsap.to(card, {
-          scale: 1.05,
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.to(card, {
-          scale: 0.95,
-          opacity: 0.6,
-          duration: 0.4,
-          ease: "power2.out",
-        });
-      }
-    });
-  }, [activeIndex]);
-
   const goToCard = (index: number) => {
     setActiveIndex(index);
   };
 
+  const currentService = scaleServices[activeIndex];
+
   return (
-    <section id="services" ref={sectionRef} className="py-24 lg:py-32 bg-gradient-to-b from-background to-background/50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-20">
-          <h2 ref={headingRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-            How We Scale Your Business<span className="text-yellow-500">?</span>
+    <section id="services" ref={sectionRef} className="py-24 lg:py-32 bg-black relative overflow-hidden">
+      {/* Grid pattern background - Swiss design */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(to right, #FFC100 1px, transparent 1px),
+            linear-gradient(to bottom, #FFC100 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px'
+        }} />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
+        {/* Header Section */}
+        <div className="mb-20">
+          <h2 ref={headingRef} className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter text-white mb-2">
+            How We Scale Your
+          </h2>
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter text-yellow-500">
+            Business?
           </h2>
         </div>
 
-        <div ref={cardsContainerRef} className="grid lg:grid-cols-3 gap-8 lg:gap-12">
-          {scaleServices.map((service, idx) => (
-            <div
-              key={service.id}
-              className="service-card relative group cursor-pointer"
-              data-testid={`card-service-${service.id}`}
-              onClick={() => goToCard(idx)}
+        {/* Main Content - Swiss Grid Layout */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          
+          {/* Left: Animated SVG */}
+          <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-lg">
+              <img 
+                ref={teamWorkSvgRef}
+                src={teamWorkSvg} 
+                alt="Team Work" 
+                className="w-full h-auto drop-shadow-2xl"
+              />
+              
+              {/* Decorative elements - Swiss style */}
+              <div className="absolute -top-8 -right-8 w-32 h-32 border-4 border-yellow-500 rounded-full opacity-20" />
+              <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-yellow-500 opacity-10 rounded-full" />
+            </div>
+          </div>
+
+          {/* Right: Card Carousel */}
+          <div className="order-1 lg:order-2">
+            <div 
+              ref={cardRef}
+              className="relative bg-gradient-to-br from-zinc-900 to-black border-2 border-yellow-500/30 rounded-none overflow-hidden"
+              style={{ minHeight: '400px' }}
             >
-              <div className={`relative p-8 lg:p-10 rounded-3xl bg-gradient-to-br from-accent/5 to-accent/10 border border-accent/20 backdrop-blur-sm h-full flex flex-col transition-all duration-300 ${
-                activeIndex === idx
-                  ? "border-accent/40 hover:shadow-[0_0_30px_rgba(234,179,8,0.15)]"
-                  : "hover:border-accent/40 hover:shadow-[0_0_30px_rgba(234,179,8,0.15)]"
-              }`}>
-                {/* Number Badge */}
-                <div className="absolute -top-4 -left-4">
-                  <span className="bg-yellow-500 text-black px-6 py-2 rounded-full text-sm font-bold">
-                    {service.number}
-                  </span>
-                </div>
+              {/* Card number badge - Swiss style */}
+              <div className="absolute top-0 left-0 bg-yellow-500 text-black px-8 py-4">
+                <span className="text-4xl font-black tracking-tighter">
+                  {currentService.number}
+                </span>
+              </div>
 
-                {/* Title */}
-                <h3 className="text-2xl lg:text-3xl font-bold tracking-tight mb-4 mt-4">
-                  {service.title}
+              {/* Card content */}
+              <div className="p-8 pt-20 lg:p-12 lg:pt-24">
+                <h3 className="text-3xl lg:text-4xl font-bold tracking-tight text-white mb-6 leading-tight">
+                  {currentService.title}
                 </h3>
-
-                {/* Description */}
-                <p className="text-lg text-muted-foreground leading-relaxed flex-grow">
-                  {service.description}
+                
+                <div className="h-1 w-20 bg-yellow-500 mb-6" />
+                
+                <p className="text-lg lg:text-xl text-gray-300 leading-relaxed">
+                  {currentService.description}
                 </p>
+              </div>
 
-                {/* Visual Element */}
-                <div className="mt-8 opacity-30 flex justify-center">
-                  {service.icon === "map" && (
-                    <svg viewBox="0 0 120 80" className="w-32 h-20">
-                      <circle cx="20" cy="60" r="8" className="fill-yellow-500" />
-                      <path d="M 28 60 L 50 40" stroke="currentColor" strokeWidth="2" className="text-yellow-500" />
-                      <circle cx="50" cy="40" r="8" className="fill-yellow-500" />
-                      <path d="M 58 40 L 80 20" stroke="currentColor" strokeWidth="2" className="text-yellow-500" />
-                      <circle cx="80" cy="20" r="8" className="fill-yellow-500" />
-                      <path d="M 88 20 L 100 10" stroke="currentColor" strokeWidth="2" className="text-yellow-500" />
-                      <circle cx="100" cy="10" r="10" className="fill-yellow-500" />
-                    </svg>
-                  )}
-                  {service.icon === "message" && (
-                    <svg viewBox="0 0 100 80" className="w-32 h-20">
-                      <rect x="10" y="20" width="80" height="50" rx="8" className="fill-yellow-500/30 stroke-yellow-500" strokeWidth="2" />
-                      <circle cx="30" cy="40" r="3" className="fill-yellow-500" />
-                      <circle cx="50" cy="40" r="3" className="fill-yellow-500" />
-                      <circle cx="70" cy="40" r="3" className="fill-yellow-500" />
-                      <path d="M 30 55 Q 50 60, 70 55" stroke="currentColor" strokeWidth="2" className="text-yellow-500" fill="none" />
-                    </svg>
-                  )}
-                  {service.icon === "traffic" && (
-                    <svg viewBox="0 0 120 60" className="w-32 h-16">
-                      <path d="M 10 30 L 30 30 L 25 25 M 30 30 L 25 35" stroke="currentColor" strokeWidth="2" className="text-yellow-500" fill="none" />
-                      <path d="M 40 30 L 60 30 L 55 25 M 60 30 L 55 35" stroke="currentColor" strokeWidth="2" className="text-yellow-500" fill="none" />
-                      <path d="M 70 30 L 90 30 L 85 25 M 90 30 L 85 35" stroke="currentColor" strokeWidth="2" className="text-yellow-500" fill="none" />
-                      <circle cx="105" cy="30" r="12" className="fill-yellow-500" />
-                      <text x="105" y="35" textAnchor="middle" className="fill-black text-xs font-bold">$</text>
-                    </svg>
-                  )}
-                </div>
+              {/* Progress bar */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-zinc-800">
+                <div 
+                  className="h-full bg-yellow-500 transition-all duration-5000 ease-linear"
+                  style={{ width: '100%' }}
+                  key={activeIndex}
+                />
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Navigation Dots */}
-        <div className="flex justify-center gap-3 mt-12">
-          {scaleServices.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => goToCard(idx)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                activeIndex === idx
-                  ? "bg-yellow-500 w-8"
-                  : "bg-yellow-500/30 hover:bg-yellow-500/50"
-              }`}
-              aria-label={`Go to card ${idx + 1}`}
-            />
-          ))}
+            {/* Navigation dots - Swiss minimal style */}
+            <div className="flex gap-4 mt-8">
+              {scaleServices.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goToCard(idx)}
+                  className={`h-1 transition-all duration-300 ${
+                    activeIndex === idx
+                      ? "bg-yellow-500 w-16"
+                      : "bg-yellow-500/30 w-8 hover:bg-yellow-500/50"
+                  }`}
+                  aria-label={`Go to service ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Service indicators - Swiss typography */}
+            <div className="mt-8 flex gap-6">
+              {scaleServices.map((service, idx) => (
+                <button
+                  key={service.id}
+                  onClick={() => goToCard(idx)}
+                  className={`text-left transition-all duration-300 ${
+                    activeIndex === idx
+                      ? "opacity-100"
+                      : "opacity-30 hover:opacity-60"
+                  }`}
+                >
+                  <span className="block text-yellow-500 font-black text-sm mb-1">
+                    {service.number}
+                  </span>
+                  <span className="block text-white text-xs font-medium tracking-tight">
+                    {service.title.split(' ')[0]}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
