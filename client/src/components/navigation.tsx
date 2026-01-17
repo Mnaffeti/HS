@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import TextPlugin from "gsap/TextPlugin";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import mainLogo from "@/assests/navlogo.png";
 
 const navLinks = [
@@ -95,12 +95,22 @@ export function Navigation() {
                 {link.label}
               </button>
             ))}
+            <a 
+              href="https://wa.me/21696196407" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground hover:text-accent transition-colors border border-border rounded-md hover:border-accent group"
+              data-testid="link-phone"
+            >
+              <Phone className="h-4 w-4 group-hover:animate-pulse" />
+              <span className="tracking-wide">+216 96 196 407</span>
+            </a>
             <Button
               ref={ctaRef}
               onMouseEnter={() => ctaTl.current?.play()}
               onMouseLeave={() => ctaTl.current?.reverse()}
               onClick={() => scrollToSection("#contact")}
-              className="bg-accent text-accent-foreground border border-accent-border"
+              className="bg-accent text-accent-foreground border border-accent-border shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold"
               data-testid="button-nav-cta"
             >
               Get Started
@@ -120,7 +130,7 @@ export function Navigation() {
 
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isMobileMenuOpen ? "max-h-64 pb-6" : "max-h-0"
+            isMobileMenuOpen ? "max-h-80 pb-6" : "max-h-0"
           }`}
         >
           <div className="flex flex-col gap-4">
@@ -134,9 +144,19 @@ export function Navigation() {
                 {link.label}
               </button>
             ))}
+            <a 
+              href="https://wa.me/21696196407" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground hover:text-accent transition-colors border border-border rounded-md hover:border-accent w-fit"
+              data-testid="link-mobile-phone"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="tracking-wide">+216 96 196 407</span>
+            </a>
             <Button
               onClick={() => scrollToSection("#contact")}
-              className="bg-accent text-accent-foreground border border-accent-border w-fit"
+              className="bg-accent text-accent-foreground border border-accent-border w-fit shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold"
               data-testid="button-mobile-cta"
             >
               Get Started
