@@ -93,7 +93,18 @@ export function ContactSection() {
 
   const mutation = useMutation({
     mutationFn: async (data: InsertContact) => {
-      return apiRequest("POST", "/api/contact", data);
+      // Send directly to the PHP script that will be hosted on OVH
+      const response = await fetch("/contact.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to send message to PHP server");
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       toast({
